@@ -1,5 +1,5 @@
 <table align="center"><tr><td align="center" width="9999">
-<img src="https://www.freeiconspng.com/uploads/live-chat-icon-6.jpg" align="center" width="150" alt="Project icon">
+<img src="https://icon-library.net/icon/icon-gallery-6.html" align="center" width="150" alt="Project icon">
 
 # Gallery
 
