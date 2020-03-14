@@ -8,7 +8,7 @@
 
 
 int getCommandNumberFromUser();
-
+void printData();
 
 int main(void)
 {
@@ -18,11 +18,8 @@ int main(void)
 	// initialize album manager
 	AlbumManager albumManager(dataAccess);
 
-	// Get currect time.
-	auto timenow = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
 	std::string albumName;
-	std::cout << "Gabriel Bialyk || " << ctime(&timenow) << std::endl;
+	printData();
 	std::cout << "Welcome to Gallery!" << std::endl;
 	std::cout << "===================" << std::endl;
 	std::cout << "Type " << HELP << " to a list of all supported commands" << std::endl;
@@ -62,4 +59,16 @@ int getCommandNumberFromUser()
 	}
 
 	return std::atoi(input.c_str());
+}
+
+
+/*
+The function print the data (creator + time).
+*/
+void printData()
+{
+	// Get currect time.
+	auto timenow = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+	std::cout << "Gabriel Bialyk || " << ctime(&timenow) << std::endl;
 }
