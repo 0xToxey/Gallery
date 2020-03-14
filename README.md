@@ -1,5 +1,5 @@
 <table align="center"><tr><td align="center" width="9999">
-<img src="https://icon-library.net/icon/icon-gallery-6.html" align="center" width="150" alt="Project icon">
+<img src="https://w0.pngwave.com/png/364/772/slide-show-presentation-slide-computer-icons-reversal-film-gallery-icon-png-clip-art-thumbnail.png" align="center" width="150" alt="Project icon">
 
 # Gallery
 
