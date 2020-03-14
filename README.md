@@ -1,5 +1,5 @@
 <table align="center"><tr><td align="center" width="9999">
-<img src="https://img.icons8.com/wired/64/000000/gallery.png" align="center" width="150" alt="Project icon">
+<img src="https://www.pngitem.com/pimgs/m/80-801467_gallery-white-gallery-icon-png-transparent-png.png" align="center" width="150" alt="Project icon">
 
 # Gallery
 
