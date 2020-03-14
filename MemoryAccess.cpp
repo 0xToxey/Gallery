@@ -186,7 +186,16 @@ void MemoryAccess::deleteUser(const User& user)
 		for (auto iter = m_users.begin(); iter != m_users.end(); ++iter) {
 			if (*iter == user) {
 				iter = m_users.erase(iter);
-				return;
+				break;
+			}
+		}
+		
+		// search if the user has albums, if found delete the album.
+		for (auto albumIt = this->m_albums.begin(); albumIt != this->m_albums.end(); ++albumIt)
+		{
+			if ((*albumIt).getOwnerId() == user.getId())
+			{
+				albumIt = this->m_albums.erase(albumIt);
 			}
 		}
 	}
