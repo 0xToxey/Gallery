@@ -5,7 +5,7 @@
 
 enum CommandType
 {
-	HELP = 0,
+	HELP,
 	// Album operations
 	CREATE_ALBUM = 1,
 	OPEN_ALBUM,
