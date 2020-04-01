@@ -3,6 +3,9 @@
 #include <iostream>
 #include <io.h>
 #include "sqlite3.h"
+#include "MyException.h"
+#include "AlbumNotOpenException.h"
+#include "ItemNotFoundException.h"
 
 
 class DatabaseAccess : public IDataAccess
@@ -53,5 +56,5 @@ public:
 private:
 	sqlite3* _database;
 	std::string _dbName = "GalleryDB.sqlite";
-
+	
 };
