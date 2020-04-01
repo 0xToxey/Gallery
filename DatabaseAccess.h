@@ -2,11 +2,14 @@
 #include "IDataAccess.h"
 #include <iostream>
 #include <io.h>
+#include <unordered_map>
 #include "sqlite3.h"
 #include "MyException.h"
 #include "AlbumNotOpenException.h"
 #include "ItemNotFoundException.h"
 
+
+#define SELECT_DATA std::vector<std::unordered_map<std::string, std::string>>
 
 class DatabaseAccess : public IDataAccess
 {
@@ -49,6 +52,7 @@ public:
 	virtual Picture getTopTaggedPicture();
 	virtual std::list<Picture> getTaggedPicturesOfUser(const User& user);
 
+	// db Handle - V
 	virtual bool open();
 	virtual void close();
 	virtual void clear();
@@ -57,4 +61,6 @@ private:
 	sqlite3* _database;
 	std::string _dbName = "GalleryDB.sqlite";
 	
+	void _selectFunc(std::string field, std::string table, std::string condition, SELECT_DATA* data);
+	friend int _selectRequest(void* data, int argc, char** argv, char** azColName);
 };
