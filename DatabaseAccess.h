@@ -1,6 +1,8 @@
 #pragma once
 #include "IDataAccess.h"
 #include <iostream>
+#include <io.h>
+#include "sqlite3.h"
 
 
 class DatabaseAccess : public IDataAccess
@@ -49,6 +51,7 @@ public:
 	virtual void clear();
 
 private:
-
+	sqlite3* _database;
+	std::string _dbName = "GalleryDB.sqlite";
 
 };

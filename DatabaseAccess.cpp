@@ -1,7 +1,7 @@
 #pragma once
 #include "DatabaseAccess.h"
 
-DatabaseAccess::DatabaseAccess()
+DatabaseAccess::DatabaseAccess() : _database(nullptr)
 {
 }
 
@@ -9,6 +9,8 @@ DatabaseAccess::~DatabaseAccess()
 {
 }
 
+
+/*			Album related			*/
 const std::list<Album> DatabaseAccess::getAlbums()
 {
 	return std::list<Album>();
@@ -45,6 +47,8 @@ void DatabaseAccess::printAlbums()
 {
 }
 
+
+/*			Picture related				*/
 void DatabaseAccess::addPictureToAlbumByName(const std::string& albumName, const Picture& picture)
 {
 }
@@ -61,14 +65,15 @@ void DatabaseAccess::untagUserInPicture(const std::string& albumName, const std:
 {
 }
 
+
+/*			User related			*/
 void DatabaseAccess::printUsers()
 {
 }
 
 User DatabaseAccess::getUser(int userId)
 {
-	User a = User(15, "a");
-	return a;
+	return User(0, "null");;
 }
 
 void DatabaseAccess::createUser(User& user)
@@ -84,6 +89,8 @@ bool DatabaseAccess::doesUserExists(int userId)
 	return false;
 }
 
+
+/*			User statistics				*/
 int DatabaseAccess::countAlbumsOwnedOfUser(const User& user)
 {
 	return 0;
@@ -104,6 +111,8 @@ float DatabaseAccess::averageTagsPerAlbumOfUser(const User& user)
 	return 0.0f;
 }
 
+
+/*			Queries			*/
 User DatabaseAccess::getTopTaggedUser()
 {
 	return User(0,"null");
@@ -119,13 +128,26 @@ std::list<Picture> DatabaseAccess::getTaggedPicturesOfUser(const User& user)
 	return std::list<Picture>();
 }
 
+
+/*			DataBase handle			*/
 bool DatabaseAccess::open()
 {
-	return false;
+	// Try open DataBase.
+	int res = sqlite3_open(this->_dbName.c_str(), &this->_database); 
+	if (res != SQLITE_OK)
+	{
+		this->_database = nullptr;
+		std::cout << "Failed to open DataBase" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
 void DatabaseAccess::close()
 {
+	sqlite3_close(this->_database);
+	this->_database = nullptr;
 }
 
 void DatabaseAccess::clear()
