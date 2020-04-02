@@ -41,7 +41,7 @@ const std::list<Album> DatabaseAccess::getAlbumsOfUser(const User& user)
 	// Create the albums List
 	for (std::unordered_map<std::string, std::string> row : selectData)
 	{
-		albumList.push_back(Album(stoi(row["ID"]), row["Name"], row["Creation_date"]));
+		albumList.push_back(openAlbum(row["Name"]));
 	}
 
 	return albumList;
@@ -141,18 +141,125 @@ void DatabaseAccess::printAlbums()
 /*			Picture related				*/
 void DatabaseAccess::addPictureToAlbumByName(const std::string& albumName, const Picture& picture)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+		std::string albumID;
+		std::string creationDate = "'" + picture.getCreationDate() + "', ";
+		std::string location = "'" + picture.getPath() + "', ";
+		std::string name = "'" + picture.getName() + "', ";
+
+		// Get album id.
+		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		albumID = selectData[0]["ID"];
+
+		// Add new picture
+		std::string sqlStat = "INSERT INTO Pictures (Name, Location, Creation_date, Album_id) VALUES (" + name + location + creationDate + albumID + ");";
+		char* errMesg = nullptr;
+
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error INSERT to " + albumName);
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 void DatabaseAccess::removePictureFromAlbumByName(const std::string& albumName, const std::string& pictureName)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		// Get album id.
+		SELECT_DATA selectData;
+		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		std::string albumID = selectData[0]["ID"];
+
+		// Delete from Picture
+		untagUserInPicture(albumName, pictureName, UNTAG_ALL);
+		std::string sqlStat = "DELETE FROM Pictures WHERE Name = '" + pictureName + "' AND Album_id = " + albumID  + ";";
+		char* errMesg = nullptr;
+
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error DELETE from " + albumName);
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 void DatabaseAccess::tagUserInPicture(const std::string& albumName, const std::string& pictureName, int userId)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+
+		// Get album id.
+		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		std::string albumID = selectData[0]["ID"];
+
+		// Get picture id. 
+		this->_selectFunc("ID", "Pictures", "WHERE Name = '" + pictureName + "' AND Album_id = " + albumID, &selectData);
+		std::string pictureID = selectData[0]["ID"] + ", ";
+
+
+		// Add new tag 
+		std::string sqlStat = "INSERT INTO Tags (Picture_id, User_id) VALUES (" + pictureID + std::to_string(userId) + ");";
+		char* errMesg = nullptr;
+
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error TAG on " + albumName);
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 void DatabaseAccess::untagUserInPicture(const std::string& albumName, const std::string& pictureName, int userId)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+
+		// Get album id.
+		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		std::string albumID = selectData[0]["ID"];
+
+		// Get picture id. 
+		this->_selectFunc("ID", "Pictures", "WHERE Name = '" + pictureName + "' AND Album_id = " + albumID, &selectData);
+		std::string pictureID = selectData[0]["ID"] + ", ";
+
+
+		// Delete tag
+		std::string sqlStat;
+		if (userId == UNTAG_ALL) // If want to delete all tag of picture.
+			sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + ");";
+		else
+			sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + "AND User_id = " + std::to_string(userId) + ");";
+
+		char* errMesg = nullptr;
+
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error delete tags.");
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 
@@ -292,7 +399,7 @@ void DatabaseAccess::clear()
 /*
 	Function helps with the select request.
 */
-void DatabaseAccess::_selectFunc(std::string field, std::string table, std::string condition, SELECT_DATA* data)
+void DatabaseAccess::_selectFunc(std::string field, std::string table, std::string condition, SELECT_DATA* data) const
 {
 	if (_access(this->_dbName.c_str(), 0) == 0)
 	{

@@ -10,6 +10,7 @@
 
 
 #define SELECT_DATA std::vector<std::unordered_map<std::string, std::string>>
+#define UNTAG_ALL -111
 
 class DatabaseAccess : public IDataAccess
 {
@@ -17,7 +18,7 @@ public:
 	DatabaseAccess();
 	~DatabaseAccess();
 
-	// album related
+	// album related - V
 	virtual const std::list<Album> getAlbums();
 	virtual const std::list<Album> getAlbumsOfUser(const User& user);
 	virtual void createAlbum(const Album& album);
@@ -60,7 +61,7 @@ public:
 private:
 	sqlite3* _database;
 	std::string _dbName = "GalleryDB.sqlite";
-	
-	void _selectFunc(std::string field, std::string table, std::string condition, SELECT_DATA* data);
+
+	void _selectFunc(std::string field, std::string table, std::string condition, SELECT_DATA* data) const;
 	friend int _selectRequest(void* data, int argc, char** argv, char** azColName);
 };
