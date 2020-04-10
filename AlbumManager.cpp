@@ -295,7 +295,6 @@ void AlbumManager::addUser()
 	std::cout << "User " << name << " with id @" << user.getId() << " created successfully." << std::endl;
 }
 
-
 void AlbumManager::removeUser()
 {
 	// get user name

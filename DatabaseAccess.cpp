@@ -35,7 +35,7 @@ const std::list<Album> DatabaseAccess::getAlbumsOfUser(const User& user)
 	std::list<Album> albumList;
 	
 	// Get all albums of user.
-	std::string condition = "WHERE ID = " + user.getId();
+	std::string condition = "WHERE User_id = " + std::to_string(user.getId());
 	this->_selectFunc("*", "Albums", condition, &selectData);
 
 	// Create the albums List
@@ -55,7 +55,7 @@ void DatabaseAccess::createAlbum(const Album& album)
 	{
 		// Insert into PhonePrefix
 		std::string userId = std::to_string(album.getOwnerId());
-		std::string sqlStat = "INSERT INTO Albums (Name, User_id, Creation_date) VALUES (" + album.getName() + " " + userId + album.getCreationDate() + ");";
+		std::string sqlStat = "INSERT INTO Albums (Name, User_id, Creation_date) VALUES ('" + album.getName() + "', " + userId + ", '" + album.getCreationDate() + "');";
 		char* errMesg = nullptr;
 
 		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
@@ -70,9 +70,30 @@ void DatabaseAccess::createAlbum(const Album& album)
 
 void DatabaseAccess::deleteAlbum(const std::string& albumName, int userId)
 {
-	std::string sqlStat = "DELETE FROM Albums WHERE User_id = " + userId + ';';
-	char* errMesg = nullptr;
+	std::string sqlStat;
+	if (albumName.size() > 0) // If albu, name is empty, delete all albums of user.
+	{
+		Album albumToDelete = this->openAlbum(albumName);
+		// Delete all pictures&tags from album.
+		this->removePictureFromAlbumByName(albumName, "");
 
+		sqlStat = "DELETE FROM Albums WHERE Name = '" + albumName + "' User_id = " + std::to_string(userId) + ';';
+	}
+	else
+	{
+		// Get all user albums.
+		std::list<Album> userAlbums = this->getAlbumsOfUser(this->getUser(userId));
+
+		// Delete all pictures & tags from all albums of user.
+		for (Album album : userAlbums)
+		{
+			this->removePictureFromAlbumByName(album.getName(), "");
+		}
+
+		sqlStat = "DELETE FROM Albums WHERE User_id = " + std::to_string(userId) + ';';
+	}
+
+	char* errMesg = nullptr;
 	int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
 	if (res != SQLITE_OK)
 	{
@@ -84,14 +105,13 @@ bool DatabaseAccess::doesAlbumExists(const std::string& albumName, int userId)
 {
 	SELECT_DATA selectData;
 
-	// Get all albums of user.
-	std::string condition = "WHERE User_id = " + std::to_string(userId) + " and name = '" + albumName + "'";
+	// Check if there is album with that name.
+	std::string condition = "WHERE Name = '" + albumName + "'";
 	this->_selectFunc("*", "Albums", condition, &selectData);
 
-	// Create the albums List
+	// If enter to loop, There is albu, with tha same name.
 	for (std::unordered_map<std::string, std::string> row : selectData)
 	{
-		if (row["User_id"] == std::to_string(userId))
 			return true;
 	}
 
@@ -104,12 +124,40 @@ Album DatabaseAccess::openAlbum(const std::string& albumName)
 	Album openAlbum;
 
 	// Get album data
-	std::string condition = "WHERE name = '" + albumName + "'";
+	std::string condition = "WHERE Name = '" + albumName + "'";
 	this->_selectFunc("*", "Albums", condition, &selectData);
 
 	openAlbum.setCreationDate(selectData[0]["Creation_date"]);
 	openAlbum.setName(selectData[0]["Name"]);
 	openAlbum.setOwner(stoi(selectData[0]["User_id"]));
+
+	// Get all photos of album
+	condition = "WHERE Album_id = " + selectData[0]["ID"];
+	this->_selectFunc("*", "Pictures", condition, &selectData);
+
+	for (std::unordered_map<std::string, std::string> row : selectData)
+	{
+		// Create picture
+		int picId = stoi(row["ID"]);
+		std::string picName = row["Name"];
+		std::string picLocation = row["Location"];
+		std::string picDate = row["Creation_date"];
+		Picture pic(picId, picName, picLocation, picDate);
+		
+		// Add all tags of picture.
+		SELECT_DATA tagsDataSelect;
+		condition = "WHERE Picture_id = " + row["ID"];
+		this->_selectFunc("*", "Tags", condition, &tagsDataSelect);
+		
+		for (std::unordered_map<std::string, std::string> tagRow : tagsDataSelect)
+		{
+			int userId = stoi(tagRow["User_id"]);
+			pic.tagUser(userId);
+		}
+
+		// Add new picture
+		openAlbum.addPicture(pic);
+	}
 
 	return openAlbum;
 }
@@ -133,7 +181,7 @@ void DatabaseAccess::printAlbums()
 	//	If album list is empty.
 	if (albumList.size() == 0)
 	{
-		std::cout << "Album list is empty. " << std::endl;
+		std::cout << "	~ Album list is empty. " << std::endl;
 	}
 }
 
@@ -147,14 +195,15 @@ void DatabaseAccess::addPictureToAlbumByName(const std::string& albumName, const
 		std::string albumID;
 		std::string creationDate = "'" + picture.getCreationDate() + "', ";
 		std::string location = "'" + picture.getPath() + "', ";
-		std::string name = "'" + picture.getName() + "', ";
+		std::string pictureName = "'" + picture.getName() + "', ";
+		std::string pictueId = std::to_string(picture.getId()) + ", ";
 
 		// Get album id.
-		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		this->_selectFunc("ID", "Albums", "WHERE Name = '" + albumName + "'", &selectData);
 		albumID = selectData[0]["ID"];
 
 		// Add new picture
-		std::string sqlStat = "INSERT INTO Pictures (Name, Location, Creation_date, Album_id) VALUES (" + name + location + creationDate + albumID + ");";
+		std::string sqlStat = "INSERT INTO Pictures (ID, Name, Location, Creation_date, Album_id) VALUES (" + pictueId + pictureName + location + creationDate + albumID + ");";
 		char* errMesg = nullptr;
 
 		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
@@ -175,14 +224,32 @@ void DatabaseAccess::removePictureFromAlbumByName(const std::string& albumName, 
 	{
 		// Get album id.
 		SELECT_DATA selectData;
-		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		this->_selectFunc("ID", "Albums", "WHERE Name = '" + albumName + "'", &selectData);
 		std::string albumID = selectData[0]["ID"];
 
-		// Delete from Picture
-		untagUserInPicture(albumName, pictureName, UNTAG_ALL);
-		std::string sqlStat = "DELETE FROM Pictures WHERE Name = '" + pictureName + "' AND Album_id = " + albumID  + ";";
-		char* errMesg = nullptr;
+		std::string sqlStat = "";
+		if (pictureName.size() > 0)
+		{
+			// Delete from Picture
+			untagUserInPicture(albumName, pictureName, UNTAG_ALL);
+			sqlStat = "DELETE FROM Pictures WHERE Name = '" + pictureName + "' AND Album_id = " + albumID + ";";
+		}
+		else // If pictureName is not empty, delete all photos from album.
+		{
+			// Get all pictures on album.
+			this->_selectFunc("ID", "Pictures", "WHERE Album_id = " + albumID, &selectData);
 
+			// Delete all tags from all the pictures in album.
+			for (std::unordered_map<std::string, std::string> row : selectData)
+			{
+				this->untagUserInPicture(albumName, row["Name"], UNTAG_ALL);
+			}
+
+			sqlStat = "DELETE FROM Pictures WHERE Album_id = " + albumID + ";";
+		}
+
+		// Delete picture from album.
+		char* errMesg = nullptr;
 		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
 		if (res != SQLITE_OK)
 		{
@@ -202,7 +269,7 @@ void DatabaseAccess::tagUserInPicture(const std::string& albumName, const std::s
 		SELECT_DATA selectData;
 
 		// Get album id.
-		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
+		this->_selectFunc("ID", "Albums", "WHERE Name = '" + albumName + "'", &selectData);
 		std::string albumID = selectData[0]["ID"];
 
 		// Get picture id. 
@@ -230,23 +297,30 @@ void DatabaseAccess::untagUserInPicture(const std::string& albumName, const std:
 {
 	if (_access(this->_dbName.c_str(), 0) == 0)
 	{
-		SELECT_DATA selectData;
-
-		// Get album id.
-		this->_selectFunc("ID", "Albums", "WHERE Name = " + albumName, &selectData);
-		std::string albumID = selectData[0]["ID"];
-
-		// Get picture id. 
-		this->_selectFunc("ID", "Pictures", "WHERE Name = '" + pictureName + "' AND Album_id = " + albumID, &selectData);
-		std::string pictureID = selectData[0]["ID"] + ", ";
-
-
-		// Delete tag
 		std::string sqlStat;
-		if (userId == UNTAG_ALL) // If want to delete all tag of picture.
-			sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + ");";
+		if (albumName.size() > 0 && pictureName.size() > 0) // If want to delete all user tags - get only user id.
+		{
+			SELECT_DATA selectData;
+
+			// Get album id.
+			this->_selectFunc("ID", "Albums", "WHERE Name = '" + albumName + "'", &selectData);
+			std::string albumID = selectData[0]["ID"];
+
+			// Get picture id. 
+			this->_selectFunc("ID", "Pictures", "WHERE Name = '" + pictureName + "' AND Album_id = " + albumID, &selectData);
+			std::string pictureID = selectData[0]["ID"];
+
+
+			// Delete tag
+			if (userId == UNTAG_ALL) // If want to delete all tag of picture.
+				sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + ";";
+			else
+				sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + " AND User_id = " + std::to_string(userId) + ";";
+		}
 		else
-			sqlStat = "DELETE FROM Tags WHERE Picture_id = " + pictureID + "AND User_id = " + std::to_string(userId) + ");";
+		{
+			sqlStat = "DELETE FROM Tags WHERE User_id = " + std::to_string(userId) + ";";
+		}
 
 		char* errMesg = nullptr;
 
@@ -266,23 +340,108 @@ void DatabaseAccess::untagUserInPicture(const std::string& albumName, const std:
 /*			User related			*/
 void DatabaseAccess::printUsers()
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+
+		// Get all users
+		this->_selectFunc("*", "Users", "", &selectData);
+
+		// Print users list.
+		std::cout << "Users list:" << std::endl;
+		std::cout << "-----------" << std::endl;
+		for (std::unordered_map<std::string, std::string> row : selectData)
+		{
+			std::cout << "	+ @" << row["ID"] << " - " << row["Name"] << std::endl;
+		}
+		if (selectData.size() < 1)
+			std::cout << "	~ Users list is empty." << std::endl;
+
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 User DatabaseAccess::getUser(int userId)
 {
-	return User(0, "null");;
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+		// Get user
+		this->_selectFunc("*", "Users", "WHERE ID = " + std::to_string(userId), &selectData);
+		return User(stoi(selectData[0]["ID"]), selectData[0]["Name"]);
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 void DatabaseAccess::createUser(User& user)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		// Add new user
+		std::string sqlStat = "INSERT INTO Users (Name, ID) VALUES ('" + user.getName() + "', " + std::to_string(user.getId()) + ");";
+		char* errMesg = nullptr;
+
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error adding new user ");
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 void DatabaseAccess::deleteUser(const User& user)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		// Delete all albums of user.
+		this->deleteAlbum("", user.getId());
+		
+		// Delete all tags of user.
+		this->untagUserInPicture("", "", user.getId());
+
+		std::string sqlStat = "DELETE FROM Users Where ID = " + std::to_string(user.getId());
+		char* errMesg = nullptr;
+		int res = sqlite3_exec(this->_database, sqlStat.c_str(), nullptr, nullptr, &errMesg);
+		if (res != SQLITE_OK)
+		{
+			throw MyException("Error deleting user");
+		}
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 bool DatabaseAccess::doesUserExists(int userId)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+		
+		// If the data isnt empty the user exist.
+		this->_selectFunc("ID", "Users", "WHERE ID = " + std::to_string(userId), &selectData);		
+		for (std::unordered_map<std::string, std::string> row : selectData)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 	return false;
 }
 
@@ -403,8 +562,10 @@ void DatabaseAccess::_selectFunc(std::string field, std::string table, std::stri
 {
 	if (_access(this->_dbName.c_str(), 0) == 0)
 	{
-		// std::string sqlStat = "SELECT * FROM ALBUMS;";
-		std::string sqlStat = "SELECT " + field + " FROM " + table + condition + ";";
+		// Clear data
+		data->clear();
+
+		std::string sqlStat = "SELECT " + field + " FROM " + table + " " + condition + ";";
 		char* errMesg = nullptr;
 
 		int res = sqlite3_exec(this->_database, sqlStat.c_str(), _selectRequest, data, &errMesg);
