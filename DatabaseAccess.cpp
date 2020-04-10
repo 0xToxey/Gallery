@@ -449,39 +449,185 @@ bool DatabaseAccess::doesUserExists(int userId)
 /*			User statistics				*/
 int DatabaseAccess::countAlbumsOwnedOfUser(const User& user)
 {
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+
+		// Count
+		this->_selectFunc("count(ID)", "albums", "WHERE User_id = " + std::to_string(user.getId()), &selectData);
+		int count = stoi(selectData[0]["count(ID)"]);
+		return count;
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
+	
 	return 0;
 }
 
 int DatabaseAccess::countAlbumsTaggedOfUser(const User& user)
 {
-	return 0;
+	int count = 0;
+
+	// Get all albums
+	std::list<Album> albums = this->getAlbums();
+
+	// Go through all the albums
+	for (Album album : albums)
+	{
+		// Get all the pictures
+		std::list<Picture> pictures = album.getPictures();
+
+		// Check if user tagged in one pic of the album.
+		for (Picture pic : pictures)
+		{
+			if (pic.isUserTagged(user))
+			{
+				count += 1;
+				break;
+			}
+		}
+	}
+
+	return count;
 }
 
 int DatabaseAccess::countTagsOfUser(const User& user)
 {
-	return 0;
+	int count = 0;
+
+	// Get all albums
+	std::list<Album> albums = this->getAlbums();
+	
+	// Go through all the albums
+	for (Album album : albums)
+	{
+		// Get all photos & go though them.
+		std::list<Picture> pictures = album.getPictures();
+		for (Picture pic : pictures)
+		{
+			if (pic.isUserTagged(user)) // If the user is tagged add 1.
+				count += 1;
+		}
+	}
+
+	return count;
 }
 
 float DatabaseAccess::averageTagsPerAlbumOfUser(const User& user)
 {
-	return 0.0f;
+	int albumsAmount = countAlbumsOwnedOfUser(user), totalTags = 0;
+	// Get all albums of user
+	std::list<Album> albumsUser = this->getAlbumsOfUser(user);
+
+	// Go through albums & get all the tags.
+	for (Album album : albumsUser)
+	{
+		std::list<Picture> pictures = album.getPictures();
+		for (Picture pic : pictures)
+		{
+			totalTags += pic.getTagsCount();
+		}
+	}
+
+	// Get average of tags per album.
+	return (albumsAmount == 0) ? 0 : (totalTags / albumsAmount);
 }
 
 
 /*			Queries			*/
 User DatabaseAccess::getTopTaggedUser()
 {
-	return User(0,"null");
+	if (_access(this->_dbName.c_str(), 0) == 0)
+	{
+		SELECT_DATA selectData;
+		int top = 0;
+		User topUser(0, "");
+
+		// Get all users
+		this->_selectFunc("*", "Users", "", &selectData);
+
+		// Go thought users list
+		for (std::unordered_map<std::string, std::string> row : selectData)
+		{
+			User curr = getUser(stoi(row["ID"]));
+			int currTags = countTagsOfUser(curr);
+			if (currTags >= top)
+			{
+				top = currTags;
+				topUser = curr;
+			}
+		}
+
+		// If there are no users.
+		if (topUser.getId() == 0)
+			throw MyException("There is no 'Top Tagged user'.");
+
+		return topUser;
+	}
+	else
+	{
+		throw MyException("Can't find DataBase.");
+	}
 }
 
 Picture DatabaseAccess::getTopTaggedPicture()
 {
-	return Picture(0, "null");
+	int topTaggs = 0;
+	Picture topPhoto(0, "");
+
+	// Get all albums
+	std::list<Album> albums = this->getAlbums();
+
+	// Go through all the albums
+	for (Album album : albums)
+	{
+		// Get all the pictures
+		std::list<Picture> pictures = album.getPictures();
+
+		// Check if user tagged in one pic of the album.
+		for (Picture pic : pictures)
+		{
+			if (pic.getTagsCount() >= topTaggs)
+			{
+				topPhoto = pic;
+				topTaggs = pic.getTagsCount();
+			}
+		}
+	}
+
+	// If there are no photos.
+	if (topPhoto.getId() == 0)
+		throw MyException("There is no 'Top Tagged picture'.");
+
+	return topPhoto;
 }
 
 std::list<Picture> DatabaseAccess::getTaggedPicturesOfUser(const User& user)
 {
-	return std::list<Picture>();
+	std::list<Picture> photosList;
+
+	// Get all albums
+	std::list<Album> albums = this->getAlbums();
+
+	// Go through all the albums
+	for (Album album : albums)
+	{
+		// Get all the pictures
+		std::list<Picture> pictures = album.getPictures();
+
+		// Check if user tagged, if yes add the photo to the list.
+		for (Picture pic : pictures)
+		{
+			if (pic.isUserTagged(user))
+			{
+				photosList.push_front(pic);
+			}
+		}
+	}
+
+	return photosList;
 }
 
 
