@@ -3,6 +3,7 @@
 #include "Constants.h"
 #include "MyException.h"
 #include "AlbumNotOpenException.h"
+#include "ShowPhoto.h"
 
 
 AlbumManager::AlbumManager(IDataAccess& dataAccess) :
@@ -202,11 +203,38 @@ void AlbumManager::showPicture()
 	if ( !fileExistsOnDisk(pic.getPath()) ) {
 		throw MyException("Error: Can't open <" + picName+ "> since it doesnt exist on disk.\n");
 	}
+	
+	// Get application & photo path to open.
+	std::string photoPath = pic.getPath();
+	std::string appPath;
+	int option = 0;
 
-	// Bad practice!!!
-	// Can lead to privileges escalation
-	// You will replace it on WinApi Lab(bonus)
-	system(pic.getPath().c_str()); 
+	while (option < 1 || option > 2)
+	{
+		std::cout << "Choose an app to open the photo with: " << std::endl;
+		std::cout << "	[1] Paint" << std::endl;
+		std::cout << "	[2] Other app" << std::endl;
+		std::cout << "Your option: ";
+		std::cin >> option;
+	}
+
+	if (option == 1)
+		appPath = "C:\\Windows\\system32\\mspaint.exe";
+	else
+	{
+		std::cout << "Please enter path to the app." << std::endl;
+		appPath = getInputFromConsole("Path: ");
+	}
+
+	try
+	{
+		ShowPhoto show(appPath, photoPath);
+	}
+	catch (std::exception& err)
+	{
+		throw err; // MyException("Cant open photo with that app.");
+	}
+		
 }
 
 void AlbumManager::tagUserInPicture()

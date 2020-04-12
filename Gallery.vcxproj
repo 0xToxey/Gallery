@@ -95,6 +95,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="MyException.h" />
     <ClInclude Include="Picture.h" />
+    <ClInclude Include="ShowPhoto.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
@@ -104,6 +105,7 @@
     <ClCompile Include="DatabaseAccess.cpp" />
     <ClCompile Include="MemoryAccess.cpp" />
     <ClCompile Include="Picture.cpp" />
+    <ClCompile Include="ShowPhoto.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="Gallery.cpp" />

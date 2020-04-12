@@ -532,7 +532,7 @@ float DatabaseAccess::averageTagsPerAlbumOfUser(const User& user)
 	}
 
 	// Get average of tags per album.
-	return (albumsAmount == 0) ? 0 : (totalTags / albumsAmount);
+	return (albumsAmount == 0) ? 0 : float(totalTags / albumsAmount);
 }
 
 
