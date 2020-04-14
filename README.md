@@ -14,7 +14,7 @@ Gallery project by Gabriel Bialyk
 	- [Quick start](#quick-start)
 	- [Status](#status)
 	- [What's included](#whats-included)
-	- [Creators](#creators)
+	- [Creator](#creator)
 
 ## Quick start
 
