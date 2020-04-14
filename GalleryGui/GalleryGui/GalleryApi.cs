@@ -12,6 +12,16 @@ namespace GalleryGui
     {
         private string url = "http://127.0.0.1:3232/api/";
 
+        //foreach (var field in data)
+        //{
+        //    if (field.Key.ToString() == "Name")
+        //    {
+        //        string name = field.Value.ToString();
+        //        if (name == username)
+        //            return true;
+        //    }
+        //}
+
         /*
          * Function check if user exist in database.
          */
@@ -32,32 +42,82 @@ namespace GalleryGui
                 return false;
 
             return true;
-            
-            //foreach (var field in data)
-            //{
-            //    if (field.Key.ToString() == "Name")
-            //    {
-            //        string name = field.Value.ToString();
-            //        if (name == username)
-            //            return true;
-            //    }
-            //}
         }
 
+        /*
+         * The function create new user.
+         */
+        public void createUser(string username, string password)
+        {
+            string urlCreate = this.url + "user/";
+            string data = "name=" + username + "&password=" + password;
 
+            string response = postRequest(urlCreate, data);
 
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
 
-        public string getRequest(string data)
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while creating the account.");
+        }
+
+        /*
+        * Function get the data from the PostRquest and conver it to string
+        */
+        private string postRequest(string url, string data)
+        {
+            List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>>();
+            List<string> dataSplit = data.Split('&').ToList();
+
+            foreach (string pair in dataSplit)
+            {
+                string[] pairArr = pair.Split('=').ToArray<string>();
+                postData.Add(new KeyValuePair<string, string>(pairArr[0], pairArr[1]));
+            }
+
+            string result = Task.Run(async () => await PostRequest(url, postData)).Result;
+            return result;
+        }
+
+        /*
+         * Function get the data from the GetRquest and conver it to string
+         */
+        private string getRequest(string data)
         {
             string result = Task.Run(async () => await GetRequest(data)).Result;
             return result;
         }
 
+        /*
+         * Function handle with the Get request
+         */
         private async static Task<string> GetRequest(string url)
         {
             using (HttpClient client = new HttpClient())
             {
                 using (HttpResponseMessage response = await client.GetAsync(url))
+                {
+                    using (HttpContent data = response.Content)
+                    {
+                        string content = await data.ReadAsStringAsync();
+                        return content;
+                    }
+                }
+            }
+        }
+
+        /*
+         * Functionn handle with the Post request
+         */
+        private async static Task<string> PostRequest(string url, List<KeyValuePair<string, string>> postData)
+        {
+
+            IEnumerable<KeyValuePair<string, string>> queries = postData;
+            HttpContent postDataContent = new FormUrlEncodedContent(queries);
+
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage response = await client.PostAsync(url, postDataContent))
                 {
                     using (HttpContent data = response.Content)
                     {

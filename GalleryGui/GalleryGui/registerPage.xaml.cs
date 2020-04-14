@@ -24,6 +24,7 @@ namespace GalleryGui
             InitializeComponent();
         }
 
+        #region ViewFunctions
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -32,6 +33,13 @@ namespace GalleryGui
             }
         }
 
+        private void closeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
+
+        #region ClearBorder
         private void Username_Click(object sender, MouseButtonEventArgs e)
         {
             Username.BorderBrush = System.Windows.Media.Brushes.Transparent;
@@ -46,59 +54,75 @@ namespace GalleryGui
         {
             CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
-
-        private void closeBTN_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
 
         private void CompleteRegisterBTN_Click(object sender, RoutedEventArgs e)
         {
             GalleryApi api = new GalleryApi();
 
-            // If user already exist
-            if (api.userExist(Username.Text))
-            {
-                MessageBox.Show("Username is taken.");
+            // Check that username box arent empty.
+            if (Username.Text.Length == 0)
                 Username.BorderBrush = System.Windows.Media.Brushes.Red;
+
+            // If user already exist
+            else if (api.userExist(Username.Text))
+            {
+                Username.BorderBrush = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Username is taken.");
             }
 
             // Check if pass is too short.
             else if (Password.Password.Length < 6)
             {
-                MessageBox.Show("Passwords too short.");
-                Password.BorderBrush = System.Windows.Media.Brushes.Red;
-                CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                // Check that password box arent empty.
+                if (Password.Password.Length == 0)
+                    Password.BorderBrush = System.Windows.Media.Brushes.Red;
+                
+                else if (CheckPassword.Password.Length == 0)
+                    CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                
+                else
+                {
+                    Password.BorderBrush = System.Windows.Media.Brushes.Red;
+                    CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                    MessageBox.Show("Passwords too short.");
+                }
             }
          
             // Password & pass check dont match.
             else if (CheckPassword.Password.ToString() != Password.Password.ToString())
             {
-                MessageBox.Show("Passwords don't match.");
                 Password.BorderBrush = System.Windows.Media.Brushes.Red;
                 CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Passwords don't match.");
             }
 
-            // Check if username is taken.
-            //else if (userExist)
-            //{
-            //    var responseString = await client.GetStringAsync("http://www.example.com/recepticle.aspx");
-            //}
-
+            // If all is correct
             else
             {
                 Password.BorderBrush = System.Windows.Media.Brushes.Transparent;
                 CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                Username.BorderBrush = System.Windows.Media.Brushes.Transparent;
 
-                MessageBox.Show("New account created.");
+                try
+                {
+                    api.createUser(Username.Text, Password.Password.ToString());
 
-                // Enter with new user.
-                MainWindow login = new MainWindow();
-                login.Show();
+                    MessageBox.Show("New account created.");
+                    // Enter with new user.
+                    MainWindow login = new MainWindow();
+                    login.Show();
+                    this.Close();
+                }
+                catch(Exception err)
+                {
+                    MessageBox.Show(err.Message);
+                    MainWindow loginPage = new MainWindow();
+                    loginPage.Show();
 
-                this.Close();
+                    this.Close();
+                }
             }
         }
-
     }
 }
