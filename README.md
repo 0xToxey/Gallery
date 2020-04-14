@@ -18,16 +18,16 @@ Gallery project by Gabriel Bialyk
 
 ## Quick start
 
-- ?
+- Open The releases tab and download the exe file.
 
 ## Status
 
-- ?
+- Finish V1 - Gallery Console app.
 
 ## What's included
 
-```?
-?
+```text
+.CPP, .HPP, .Sln (plus extra for vs), (releases)
 ```
 
 ## Creator
