@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Net.Http;
 
 namespace GalleryGui
 {
@@ -20,8 +19,6 @@ namespace GalleryGui
     /// </summary>
     public partial class registerPage : Window
     {
-        private static readonly HttpClient client = new HttpClient();
-
         public registerPage()
         {
             InitializeComponent();
@@ -57,9 +54,17 @@ namespace GalleryGui
 
         private void CompleteRegisterBTN_Click(object sender, RoutedEventArgs e)
         {
-            bool userExist = false;
+            GalleryApi api = new GalleryApi();
+
+            // If user already exist
+            if (api.userExist(Username.Text))
+            {
+                MessageBox.Show("Username is taken.");
+                Username.BorderBrush = System.Windows.Media.Brushes.Red;
+            }
+
             // Check if pass is too short.
-            if (Password.Password.Length < 6)
+            else if (Password.Password.Length < 6)
             {
                 MessageBox.Show("Passwords too short.");
                 Password.BorderBrush = System.Windows.Media.Brushes.Red;
@@ -73,8 +78,8 @@ namespace GalleryGui
                 Password.BorderBrush = System.Windows.Media.Brushes.Red;
                 CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
             }
-            
-            //// Check if username is taken.
+
+            // Check if username is taken.
             //else if (userExist)
             //{
             //    var responseString = await client.GetStringAsync("http://www.example.com/recepticle.aspx");
