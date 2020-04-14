@@ -62,6 +62,26 @@ namespace GalleryGui
         }
 
         /*
+         * Function check if password is correct.
+         */
+        public bool tryLoggin(string username, string password)
+        {
+            string urlCreate = this.url + "check/";
+            string data = "username=" + username + "&password=" + password;
+
+            string response = postRequest(urlCreate, data);
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+            JValue checkData = (JValue)json.SelectToken("data");
+
+            if ((string)checkData.Value == "true")
+                return true;
+            return false;
+        }
+
+
+        /*
         * Function get the data from the PostRquest and conver it to string
         */
         private string postRequest(string url, string data)

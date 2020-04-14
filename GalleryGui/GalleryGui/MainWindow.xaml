@@ -42,7 +42,7 @@
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="25"
                                Margin="63,0,0,0"
-                               BorderBrush="Transparent"/>
+                               BorderBrush="Transparent" x:Name="Username" GotFocus="Username_Click"/>
                     <iconPacks:PackIconMaterial Kind="Account" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-6"/>
                 </StackPanel>
 
@@ -54,14 +54,14 @@
                                Password="Password" FontSize="25"
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="25"
-                               Margin="60,0,0,0" BorderBrush="Transparent"/>
+                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="Password" GotFocus="Password_Click"/>
                     <iconPacks:PackIconMaterial Kind="TextboxLock" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-3"/>
                 </StackPanel>
 
                 <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,140,0,0">
-                    <Button x:Name="LoginBTN" Style="{StaticResource LogginButton}" Width="100" Height="40" Content="LOGIN" Margin="65,0,52,0"/>
+                    <Button x:Name="LoginBTN" Style="{StaticResource LogginButton}" Width="100" Height="40" Content="LOGIN" Margin="65,0,52,0" Click="LoginBTN_Click"/>
                     <Button x:Name="RegisterBTN" Style="{StaticResource LogginButton}" Width="100" Height="40" Content="REGISTER" Click="RegisterBTN_Click"/>
                 </StackPanel>
 

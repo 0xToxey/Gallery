@@ -40,17 +40,17 @@ namespace GalleryGui
         #endregion
 
         #region ClearBorder
-        private void Username_Click(object sender, MouseButtonEventArgs e)
+        private void Username_Click(object sender, RoutedEventArgs e)
         {
             Username.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
 
-        private void Password_Click(object sender, MouseButtonEventArgs e)
+        private void Password_Click(object sender, RoutedEventArgs e)
         {
             Password.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
 
-        private void CheckPassword_Click(object sender, MouseButtonEventArgs e)
+        private void CheckPassword_Click(object sender, RoutedEventArgs e)
         {
             CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
@@ -71,6 +71,14 @@ namespace GalleryGui
                 MessageBox.Show("Username is taken.");
             }
 
+            // Password & pass check dont match.
+            else if (CheckPassword.Password.ToString() != Password.Password.ToString())
+            {
+                Password.BorderBrush = System.Windows.Media.Brushes.Red;
+                CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Passwords don't match.");
+            }
+
             // Check if pass is too short.
             else if (Password.Password.Length < 6)
             {
@@ -87,14 +95,6 @@ namespace GalleryGui
                     CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
                     MessageBox.Show("Passwords too short.");
                 }
-            }
-         
-            // Password & pass check dont match.
-            else if (CheckPassword.Password.ToString() != Password.Password.ToString())
-            {
-                Password.BorderBrush = System.Windows.Media.Brushes.Red;
-                CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
-                MessageBox.Show("Passwords don't match.");
             }
 
             // If all is correct

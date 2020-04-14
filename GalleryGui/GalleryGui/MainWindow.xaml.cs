@@ -25,6 +25,7 @@ namespace GalleryGui
             InitializeComponent();
         }
 
+        #region PageView
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -33,6 +34,24 @@ namespace GalleryGui
             }
         }
 
+        private void closeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
+
+        #region ClearBorder
+        private void Username_Click(object sender, RoutedEventArgs e)
+        {
+            Username.BorderBrush = System.Windows.Media.Brushes.Transparent;
+        }
+
+        private void Password_Click(object sender, RoutedEventArgs e)
+        {
+            Password.BorderBrush = System.Windows.Media.Brushes.Transparent;
+        }
+        #endregion
+
         private void RegisterBTN_Click(object sender, RoutedEventArgs e)
         {
             registerPage register = new registerPage();
@@ -40,9 +59,24 @@ namespace GalleryGui
             this.Close();
         }
 
-        private void closeBTN_Click(object sender, RoutedEventArgs e)
+
+        private void LoginBTN_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            GalleryApi api = new GalleryApi();
+            bool success = api.tryLoggin(Username.Text, Password.Password.ToString());
+
+            if (success)
+            {
+
+            }
+            else
+            {
+                Username.BorderBrush = System.Windows.Media.Brushes.Red;
+                Password.BorderBrush = System.Windows.Media.Brushes.Red;
+
+                MessageBox.Show("Username and Password dont match.");
+            }
+
         }
     }
 }

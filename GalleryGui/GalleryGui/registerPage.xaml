@@ -29,8 +29,8 @@
 
         <StackPanel>
             <Button Style="{StaticResource CloseButton}" x:Name="closeBTN" Height="29" Content="X" Margin="337,0,0,0" Click="closeBTN_Click"/>
-            <TextBlock Text="REGISTER" FontWeight="Light" FontSize="30"
-                           FontFamily="helvetica" HorizontalAlignment="Center" Height="45" Margin="84,20,84,0"/>
+            <TextBlock Text="Registration Page" FontWeight="Light" FontSize="30"
+                           FontFamily="helvetica" HorizontalAlignment="Center" Height="45" Margin="74,20,70,0" Width="220"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1">
@@ -41,7 +41,7 @@
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="25"
                                Margin="63,0,0,0"
-                               BorderBrush="Transparent"  x:Name="Username" MouseDoubleClick="Username_Click"/>
+                               BorderBrush="Transparent"  x:Name="Username" GotFocus="Username_Click"/>
                 <iconPacks:PackIconMaterial Kind="Account" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-6"/>
             </StackPanel>
             <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
@@ -52,7 +52,7 @@
                                Password="Password" FontSize="25"
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="25"
-                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="Password" MouseDoubleClick="Password_Click"/>
+                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="Password" GotFocus="Password_Click"/>
                 <iconPacks:PackIconMaterial Kind="TextboxPassword" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-3"/>
             </StackPanel>
             <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
@@ -62,7 +62,7 @@
                                Password="Password" FontSize="25"
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="25"
-                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="CheckPassword" MouseDoubleClick="CheckPassword_Click" />
+                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="CheckPassword" GotFocus="CheckPassword_Click" />
                 <iconPacks:PackIconMaterial Kind="TextboxPassword" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-3"/>
             </StackPanel>
             <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>

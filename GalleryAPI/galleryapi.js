@@ -319,6 +319,48 @@ app.delete("/api/tag/:user_id/:picture_id", (req, res, next) => {
     });
 });
 
+// Add new user.
+app.post("/api/check/", (req, res, next) => {
+    var errors=[]
+    if (!req.body.password){errors.push("No password specified");}
+    if (errors.length)
+    {
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+
+    var data = {
+        name: req.body.username,
+        password: md5(req.body.password)
+    }
+
+    var sql ='SELECT * FROM Users WHERE Name = ?'
+    var params =[data.name]
+    
+    db.all(sql, params, function (err, result) {
+        if (err)
+        {
+            res.status(400).json({"error": err.message})
+            return;
+        }   
+
+        if (result != null)
+            res.json({
+                "message": "success",
+                "data": "false"
+            });
+        else if (result[0].Password == data.password)
+            res.json({
+                "message": "success",
+                "data": "true"
+            });
+        else
+            res.json({
+                "message": "success",
+                "data": "false"
+            });
+    });
+});
 
 // Default response for any other request
 app.use(function(req, res){
