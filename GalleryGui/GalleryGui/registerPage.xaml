@@ -9,7 +9,7 @@
         Title="registerPage" Height="450" Width="370"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
-        MouseDown="Window_MouseDown">
+        MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen">
 
     <Grid>
 

@@ -58,4 +58,60 @@
 
     </Style>
 
+    <Style TargetType="{x:Type Button}" x:Key="MenuButton">
+        <Setter Property="Foreground" Value="#FF2F7CC9"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Margin" Value="0,1,0,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" Margin="10,0,0,0">
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                
+                <Setter Property="BorderBrush" Value="#FF2F7CC9"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Background" Value="#FFB5BBC1"/>
+                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Foreground" Value="#FF2F7CC9"/>
+                
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="SettingsButton">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="Transparent"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" Value="#FFA3A7AC"/>
+                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+    
 </ResourceDictionary>

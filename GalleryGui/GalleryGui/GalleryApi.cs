@@ -29,9 +29,17 @@ namespace GalleryGui
         {
             // Create the get request msg
             string condition = url + "*/users/WHERE Name = '" + username + "'";
-            
+
             // Get the response from the server.
-            string rsponse = getRequest(condition);
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
 
             // Convert data to json.
             JObject json = JObject.Parse(rsponse);
@@ -52,7 +60,15 @@ namespace GalleryGui
             string urlCreate = this.url + "user/";
             string data = "name=" + username + "&password=" + password;
 
-            string response = postRequest(urlCreate, data);
+            string response;
+            try
+            {
+                response = postRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
 
             // Convert data to json.
             JObject json = JObject.Parse(response);
@@ -69,7 +85,15 @@ namespace GalleryGui
             string urlCreate = this.url + "check/";
             string data = "username=" + username + "&password=" + password;
 
-            string response = postRequest(urlCreate, data);
+            string response;
+            try
+            {
+                response = postRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
 
             // Convert data to json.
             JObject json = JObject.Parse(response);
@@ -80,7 +104,7 @@ namespace GalleryGui
             return false;
         }
 
-
+        #region Post&Get Requests hendlers.
         /*
         * Function get the data from the PostRquest and conver it to string
         */
@@ -95,7 +119,16 @@ namespace GalleryGui
                 postData.Add(new KeyValuePair<string, string>(pairArr[0], pairArr[1]));
             }
 
-            string result = Task.Run(async () => await PostRequest(url, postData)).Result;
+            string result;
+            try
+            {
+                result = Task.Run(async () => await PostRequest(url, postData)).Result;
+            }
+            catch(Exception err)
+            {
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
+            }
+
             return result;
         }
 
@@ -104,10 +137,19 @@ namespace GalleryGui
          */
         private string getRequest(string data)
         {
-            string result = Task.Run(async () => await GetRequest(data)).Result;
+            string result;
+            try
+            {
+                result = Task.Run(async () => await GetRequest(data)).Result;
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
+            }
+
             return result;
         }
-
+        
         /*
          * Function handle with the Get request
          */
@@ -147,5 +189,6 @@ namespace GalleryGui
                 }
             }
         }
+        #endregion
     }
 }

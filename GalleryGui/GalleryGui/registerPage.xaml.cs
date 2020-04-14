@@ -35,7 +35,7 @@ namespace GalleryGui
 
         private void closeBTN_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
         #endregion
 
@@ -62,17 +62,28 @@ namespace GalleryGui
 
             // Check that username box arent empty.
             if (Username.Text.Length == 0)
-                Username.BorderBrush = System.Windows.Media.Brushes.Red;
-
-            // If user already exist
-            else if (api.userExist(Username.Text))
             {
                 Username.BorderBrush = System.Windows.Media.Brushes.Red;
-                MessageBox.Show("Username is taken.");
+                return;
+            }
+
+            try
+            {
+                // If user already exist
+                if (api.userExist(Username.Text))
+                {
+                    Username.BorderBrush = System.Windows.Media.Brushes.Red;
+                    MessageBox.Show("Username is taken.");
+                }
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+                return;
             }
 
             // Password & pass check dont match.
-            else if (CheckPassword.Password.ToString() != Password.Password.ToString())
+            if (CheckPassword.Password.ToString() != Password.Password.ToString())
             {
                 Password.BorderBrush = System.Windows.Media.Brushes.Red;
                 CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
@@ -109,9 +120,8 @@ namespace GalleryGui
                     api.createUser(Username.Text, Password.Password.ToString());
 
                     MessageBox.Show("New account created.");
-                    // Enter with new user.
-                    MainWindow login = new MainWindow();
-                    login.Show();
+                    galleryPage gallery = new galleryPage(Username.Text);
+                    gallery.Show();
                     this.Close();
                 }
                 catch(Exception err)

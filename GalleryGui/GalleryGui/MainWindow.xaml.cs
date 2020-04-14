@@ -36,7 +36,7 @@ namespace GalleryGui
 
         private void closeBTN_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
         #endregion
 
@@ -63,20 +63,29 @@ namespace GalleryGui
         private void LoginBTN_Click(object sender, RoutedEventArgs e)
         {
             GalleryApi api = new GalleryApi();
-            bool success = api.tryLoggin(Username.Text, Password.Password.ToString());
 
-            if (success)
+            try
             {
+                bool success = api.tryLoggin(Username.Text, Password.Password.ToString());
 
+                if (success)
+                {
+                    galleryPage gallery = new galleryPage(Username.Text);
+                    gallery.Show();
+                    this.Close();
+                }
+                else
+                {
+                    Username.BorderBrush = System.Windows.Media.Brushes.Red;
+                    Password.BorderBrush = System.Windows.Media.Brushes.Red;
+
+                    MessageBox.Show("Username and Password dont match.");
+                }
             }
-            else
+            catch (Exception err)
             {
-                Username.BorderBrush = System.Windows.Media.Brushes.Red;
-                Password.BorderBrush = System.Windows.Media.Brushes.Red;
-
-                MessageBox.Show("Username and Password dont match.");
+                MessageBox.Show(err.Message);
             }
-
         }
     }
 }

@@ -344,21 +344,27 @@ app.post("/api/check/", (req, res, next) => {
             return;
         }   
 
-        if (result != null)
+        if (result.length == 0)
+        {
             res.json({
                 "message": "success",
                 "data": "false"
             });
+        }
         else if (result[0].Password == data.password)
+        {
             res.json({
                 "message": "success",
                 "data": "true"
             });
+        }
         else
+        {
             res.json({
                 "message": "success",
                 "data": "false"
             });
+        }
     });
 });
 

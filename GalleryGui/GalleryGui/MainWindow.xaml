@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GalleryGui"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="370"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
-        MouseDown="Window_MouseDown">
+        MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid>
@@ -29,8 +30,10 @@
             </Border>
 
             <StackPanel>
-                <Button Style="{StaticResource CloseButton}" x:Name="closeBTN" Height="29" Content="X" Margin="337,0,0,0" Click="closeBTN_Click"/>
-                <TextBlock Text="Gabriel's Gallery" FontWeight="Light" FontSize="30"
+                <Button Style="{StaticResource CloseButton}" x:Name="closeBTN" Height="29" Margin="337,0,-5,0" Click="closeBTN_Click">
+                    <MaterialDesing:PackIcon Kind="Close" Height="20" Width="20"/>
+                </Button>
+                    <TextBlock Text="Gabriel's Gallery" FontWeight="Light" FontSize="30"
                            FontFamily="helvetica" HorizontalAlignment="Center" Height="45" Margin="84,20,84,0"/>
             </StackPanel>
 
@@ -60,7 +63,7 @@
 
                 <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
 
-                <StackPanel Orientation="Horizontal" Margin="0,140,0,0">
+                <StackPanel Orientation="Horizontal" Margin="0,130,0,0">
                     <Button x:Name="LoginBTN" Style="{StaticResource LogginButton}" Width="100" Height="40" Content="LOGIN" Margin="65,0,52,0" Click="LoginBTN_Click"/>
                     <Button x:Name="RegisterBTN" Style="{StaticResource LogginButton}" Width="100" Height="40" Content="REGISTER" Click="RegisterBTN_Click"/>
                 </StackPanel>
