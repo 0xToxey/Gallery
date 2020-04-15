@@ -8,16 +8,17 @@
         mc:Ignorable="d"
         Title="galleryPage" Height="700" Width="1080" Visibility="Visible"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        AllowsTransparency="True" Background="Transparent">
+        AllowsTransparency="True" Background="Transparent" MouseDown="Window_MouseDown">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="860"/>
         </Grid.ColumnDefinitions>
-        
+
         <Border CornerRadius="10" Background="White" Grid.ColumnSpan="2"/>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="55" HorizontalAlignment="Right" Grid.Column="2" Width="30">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="55" HorizontalAlignment="Right" Grid.Column="1" Width="30">
             <Button Style="{StaticResource CloseButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
                     Margin="0,-19,5,0" x:Name="closeBTN" Click="closeBTN_Click">
                 <MaterialDesing:PackIcon Kind="Close" Height="25" Width="25"/>
@@ -25,20 +26,21 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Name="menuSidePanel" Background="#FFB5BBC1">
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top"
-                    Height="100" Width="220" x:Name="UserDisply" Background="#FFA3A7AC">
-                <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" Margin="194,74,0,0" x:Name="Settingsbtn">
+            <DockPanel VerticalAlignment="Top" Height="100" Width="220" x:Name="UserDisply" Background="#FFA3A7AC">
+                <TextBlock FontWeight="Light" FontFamily="helvetica" FontSize="20" Text="hello" HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom" Margin="5,0,0,0" x:Name="UsernameDisplay"/>
+                
+                <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" x:Name="Settingsbtn" Click="Settingsbtn_Click">
                     <MaterialDesing:PackIcon Kind="Settings" Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
-            </StackPanel>
+            </DockPanel>
 
             <Button Style="{StaticResource MenuButton}" Height="60" Margin="0,70,0,0" x:Name="homebtn" Click="homebtn_Click">
                 <StackPanel Orientation="Horizontal" Background="Transparent" Width="210">
                     <MaterialDesing:PackIcon Kind="Home" Height="24" Width="24"
                                                      VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <TextBlock Text="HOME" FontSize="20" Margin="10,0,0,0"/>
-                    
+
                     <TextBlock Margin="107,0,0,0" Background="#FF2F7CC9" Width="10" x:Name="HomeCurrect" Visibility="Hidden"/>
                 </StackPanel>
             </Button>
@@ -65,6 +67,10 @@
 
             <TextBlock Text="Gabriel's Gallery" FontSize="20" TextAlignment="Center"
                        Margin="0, 320"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Height="700" Width="860" x:Name="pagesPlace">
+            <TextBlock Text="TESTTT" FontSize="20" HorizontalAlignment="Center"/>
         </StackPanel>
 
     </Grid>

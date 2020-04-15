@@ -20,12 +20,30 @@ namespace GalleryGui
     public partial class galleryPage : Window
     {
         private readonly string _username;
-
+        
         public galleryPage(string user)
         {
             InitializeComponent();
+
             this._username = user;
-            updateCurrectMenu("HOME");
+            UsernameDisplay.Text = user;
+
+            // Start at home page.
+            homebtn_Click(null, null);
+        }
+
+        #region ViewFunctions
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void closeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void updateCurrectMenu(string current)
@@ -50,26 +68,49 @@ namespace GalleryGui
                 SearchCurrect.Visibility = System.Windows.Visibility.Hidden;
                 GalleyCurrect.Visibility = System.Windows.Visibility.Visible;
             }
-        }
 
-        private void closeBTN_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
+            else if (current == "SETTINGS")
+            {
+                HomeCurrect.Visibility = System.Windows.Visibility.Hidden;
+                SearchCurrect.Visibility = System.Windows.Visibility.Hidden;
+                GalleyCurrect.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
+        #endregion
 
         private void homebtn_Click(object sender, RoutedEventArgs e)
         {
             updateCurrectMenu("HOME");
+            pagesPlace.Children.Clear();
+
+
+
         }
 
         private void searchbtn_Click(object sender, RoutedEventArgs e)
         {
             updateCurrectMenu("SEARCH");
+            pagesPlace.Children.Clear();
+
         }
 
         private void gallerysbtn_Click(object sender, RoutedEventArgs e)
         {
             updateCurrectMenu("GALLERYS");
+            pagesPlace.Children.Clear();
+
+        }
+
+        private void Settingsbtn_Click(object sender, RoutedEventArgs e)
+        {
+            updateCurrectMenu("SETTINGS");
+            pagesPlace.Children.Clear();
+
+            settingsPage Child = new settingsPage();
+            object content = Child.Content;
+            Child.Content = null;
+            Child.Close();
+            this.pagesPlace.Children.Add(content as UIElement);
         }
     }
 }
