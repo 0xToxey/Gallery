@@ -19,11 +19,97 @@ namespace GalleryGui
     /// </summary>
     public partial class settingsPage : Window
     {
-        public settingsPage()
+        private string _username;
+        private string _userId;
+        private GalleryApi api;
+
+        public settingsPage(string username)
         {
             InitializeComponent();
+            this.api = new GalleryApi();
+
+            this._username = username;
+            displaySettings();
         }
         private void closeBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void displaySettings()
+        {
+            Username.Text += this._username;
+            try
+            {
+                this._userId = api.getUserId(_username);
+            }
+            catch(Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+
+            UserID.Text += this._userId;
+        }
+
+        private void Password_Click(object sender, RoutedEventArgs e)
+        {
+            Password.BorderBrush = System.Windows.Media.Brushes.Transparent;
+        }
+
+        private void CheckPassword_Click(object sender, RoutedEventArgs e)
+        {
+            CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
+        }
+
+        private void change_btn_Click(object sender, RoutedEventArgs e)
+        {   
+            GalleryApi api = new GalleryApi();
+
+            // Password & pass check dont match.
+            if (CheckPassword.Password.ToString() != Password.Text)
+            {
+                Password.BorderBrush = System.Windows.Media.Brushes.Red;
+                CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Passwords don't match.");
+            }
+
+            // Check if pass is too short.
+            else if (Password.Text.Length < 6)
+            {
+                // Check that password box arent empty.
+                if (Password.Text.Length == 0)
+                    Password.BorderBrush = System.Windows.Media.Brushes.Red;
+
+                else if (CheckPassword.Password.Length == 0)
+                    CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+
+                else
+                {
+                    Password.BorderBrush = System.Windows.Media.Brushes.Red;
+                    CheckPassword.BorderBrush = System.Windows.Media.Brushes.Red;
+                    MessageBox.Show("Passwords too short.");
+                }
+            }
+
+            // If all is correct
+            else
+            {
+                Password.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
+
+                try
+                {
+                    api.changePass(this._userId, Password.Text);
+                    MessageBox.Show("Password was changed.");
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message);
+                }
+            }
+        }
+
+        private void logout_btn_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }

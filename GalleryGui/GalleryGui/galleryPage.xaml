@@ -27,9 +27,9 @@
 
         <StackPanel HorizontalAlignment="Left" Name="menuSidePanel" Background="#FFB5BBC1">
             <DockPanel VerticalAlignment="Top" Height="100" Width="220" x:Name="UserDisply" Background="#FFA3A7AC">
-                <TextBlock FontWeight="Light" FontFamily="helvetica" FontSize="20" Text="hello" HorizontalAlignment="Left"
+                <TextBlock FontWeight="Light" FontFamily="helvetica" FontSize="20" Text="User name Display" HorizontalAlignment="Left"
                            VerticalAlignment="Bottom" Margin="5,0,0,0" x:Name="UsernameDisplay"/>
-                
+
                 <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" x:Name="Settingsbtn" Click="Settingsbtn_Click">
                     <MaterialDesing:PackIcon Kind="Settings" Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
@@ -51,7 +51,7 @@
                                                      VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <TextBlock Text="SEARCH" FontSize="20" Margin="10,0,0,0"/>
 
-                    <TextBlock Margin="92,0,0,0" Background="#FF2F7CC9" Width="10" x:Name="SearchCurrect" Visibility="Visible"/>
+                    <TextBlock Margin="92,0,0,0" Background="#FF2F7CC9" Width="10" x:Name="SearchCurrect" Visibility="Hidden"/>
                 </StackPanel>
             </Button>
 
@@ -70,7 +70,6 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Height="700" Width="860" x:Name="pagesPlace">
-            <TextBlock Text="TESTTT" FontSize="20" HorizontalAlignment="Center"/>
         </StackPanel>
 
     </Grid>

@@ -104,7 +104,65 @@ namespace GalleryGui
             return false;
         }
 
-        #region Post&Get Requests hendlers.
+        /*
+         * The function reture the user id
+         */
+         public string getUserId(string username)
+        {
+            string userId;
+
+            // Create the get request msg
+            string condition = url + "*/users/WHERE Name = '" + username + "'";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JObject data = (JObject)json.SelectToken("data"); // Take the only the "data" 
+
+            userId = data.SelectToken("ID").ToString();
+            return userId;
+        }
+
+        /*
+         * The function update password
+         */
+         public void changePass(string userid, string password)
+         {
+            string urlCreate = this.url + "user/" + userid;
+            string data = "password=" + password;
+
+            string response;
+            try
+            {
+                response = patchRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while changing password");
+
+            else if (json.Count == 0)
+                throw new Exception("Error while changing password");
+         }
+
+
+        #region Post,Get,Delete,Patch Requests hendlers.
         /*
         * Function get the data from the PostRquest and conver it to string
         */
@@ -126,7 +184,7 @@ namespace GalleryGui
             }
             catch(Exception err)
             {
-                throw new Exception("Something wrong with the server\n Please check that the server is on.");
+                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;
@@ -144,12 +202,57 @@ namespace GalleryGui
             }
             catch (Exception err)
             {
-                throw new Exception("Something wrong with the server\n Please check that the server is on.");
+                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;
         }
-        
+
+        /*
+         * Function get the data from the PatchRquest and conver it to string
+         */
+        private string patchRequest(string url, string data)
+        {
+            List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>>();
+            List<string> dataSplit = data.Split('&').ToList();
+
+            foreach (string pair in dataSplit)
+            {
+                string[] pairArr = pair.Split('=').ToArray<string>();
+                postData.Add(new KeyValuePair<string, string>(pairArr[0], pairArr[1]));
+            }
+
+            string result;
+            try
+            {
+                result = Task.Run(async () => await PatchRequest(url, postData)).Result;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+            }
+
+            return result;
+        }
+
+        /*
+         * Function get the data from the DeleteRquest and conver it to string
+         */
+        private string deleteRequest(string url, string data)
+        {
+            string result;
+            try
+            {
+                result = Task.Run(async () => await DeleteRequest(url)).Result;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+            }
+
+            return result;
+        }
+
         /*
          * Function handle with the Get request
          */
@@ -189,6 +292,69 @@ namespace GalleryGui
                 }
             }
         }
+
+        /*
+         * Functionn handle with the Patch request
+         */
+        private async static Task<string> PatchRequest(string url, List<KeyValuePair<string, string>> postData)
+        {
+            IEnumerable<KeyValuePair<string, string>> queries = postData;
+            HttpContent postDataContent = new FormUrlEncodedContent(queries);
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage response = await Patch.PatchAsync(client, url, postDataContent))
+                {
+                    using (HttpContent data = response.Content)
+                    {
+                        string content = await data.ReadAsStringAsync();
+                        return content;
+                    }
+                }
+            }
+        }
+
+        /*
+        * Functionn handle with the Delete request
+        */
+        private async static Task<string> DeleteRequest(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage response = await client.DeleteAsync(url))
+                {
+                    using (HttpContent data = response.Content)
+                    {
+                        string content = await data.ReadAsStringAsync();
+                        return content;
+                    }
+                }
+            }
+        }
         #endregion
+    }
+
+    static class Patch
+    {
+        public static async Task<HttpResponseMessage> PatchAsync(this HttpClient client, string requestUri, HttpContent iContent)
+        {
+            var method = new HttpMethod("PATCH");
+            var request = new HttpRequestMessage(method, requestUri)
+            {
+                Content = iContent
+            };
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch (TaskCanceledException e)
+            {
+                throw e;
+            }
+
+            return response;
+        }
+
     }
 }

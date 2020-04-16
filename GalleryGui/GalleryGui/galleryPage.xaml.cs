@@ -106,7 +106,7 @@ namespace GalleryGui
             updateCurrectMenu("SETTINGS");
             pagesPlace.Children.Clear();
 
-            settingsPage Child = new settingsPage();
+            settingsPage Child = new settingsPage(_username);
             object content = Child.Content;
             Child.Content = null;
             Child.Close();

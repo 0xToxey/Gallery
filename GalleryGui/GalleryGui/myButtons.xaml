@@ -91,7 +91,7 @@
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="SettingsButton">
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="#FF2F7CC9"/>
         <Setter Property="Background" Value="Transparent"/>
 
         <Setter Property="Template">

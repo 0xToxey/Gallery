@@ -182,19 +182,20 @@ app.post("/api/tag/", (req, res, next) => {
 // Update user data
 app.patch("/api/user/:id", (req, res, next) => {
     var data = {
-        name: req.body.name,
-        password : req.body.password ? md5(req.body.password) : null}
+        password :md5(req.body.password)}
         
+        console.log(req.body.password)
+
     db.run(
-        `UPDATE Users set 
-           name = COALESCE(?,name),
+        `UPDATE Users set
            password = COALESCE(?,password) 
            WHERE id = ?`,
-        [data.name, data.password, req.params.id],
+        [data.password, req.params.id],
         function (err, result)
         {
             if (err){
                 res.status(400).json({"error": res.message})
+                console.log(err)
                 return;
             }
             res.json({
@@ -319,7 +320,7 @@ app.delete("/api/tag/:user_id/:picture_id", (req, res, next) => {
     });
 });
 
-// Add new user.
+// Check if pass is correct
 app.post("/api/check/", (req, res, next) => {
     var errors=[]
     if (!req.body.password){errors.push("No password specified");}
