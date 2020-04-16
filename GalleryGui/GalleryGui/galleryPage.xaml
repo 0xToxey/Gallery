@@ -31,7 +31,7 @@
                 <TextBlock FontWeight="Light" FontFamily="helvetica" FontSize="20" Text="User name Display" HorizontalAlignment="Left"
                            VerticalAlignment="Bottom" Margin="5,0,0,0" x:Name="UsernameDisplay"/>
 
-                <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" x:Name="Settingsbtn" Click="Settingsbtn_Click">
+                    <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" x:Name="Settingsbtn" Click="settingsbtn_Click">
                     <MaterialDesing:PackIcon Kind="Settings" Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
             </DockPanel>

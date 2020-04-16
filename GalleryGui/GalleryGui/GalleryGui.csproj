@@ -136,6 +136,9 @@
     <Compile Include="galleryPage.xaml.cs">
       <DependentUpon>galleryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="homePage.xaml.cs">
+      <DependentUpon>homePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="registerPage.xaml.cs">
       <DependentUpon>registerPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
       <DependentUpon>settingsPage.xaml</DependentUpon>
     </Compile>
     <Page Include="galleryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="homePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

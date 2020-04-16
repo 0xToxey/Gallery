@@ -14,7 +14,7 @@
             <TextBlock Text="SETTINGS" FontWeight="Light" FontFamily="helvetica"
                        FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
 
-            <StackPanel Margin="64,144,396,174" >
+            <StackPanel Margin="70,165,390,155" >
                 <TextBlock x:Name="Username" Text="Username: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="20,0,0,0"/>
                 <TextBlock x:Name="UserID" Text="ID: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="20,0,0,0"/>
 
@@ -43,7 +43,7 @@
                             Height="40" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="50,25,126,0" Click="change_btn_Click"/>
             </StackPanel>
 
-            <StackPanel Margin="397,200,38,232">
+            <StackPanel Margin="399,224,36,208">
                 <TextBlock Text="Delete account:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica"/>
                 <Button x:Name="delete_btn" Content="DELETE" FontSize="30" Width="140"
                             Height="40" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,5,0,0" Click="delete_btn_Click"/>

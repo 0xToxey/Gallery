@@ -193,7 +193,6 @@ app.patch("/api/user/:id", (req, res, next) => {
         {
             if (err){
                 res.status(400).json({"error": res.message})
-                console.log(err)
                 return;
             }
             res.json({
@@ -292,7 +291,6 @@ app.delete("/api/picture/:album_id/:name", (req, res, next) => {
     db.run(sql, params, function (err) {
         if (err)
         {
-            console.log(sql)
             res.status(400).json({"error": err.message})
             return;
         }
@@ -309,7 +307,6 @@ app.delete("/api/tag/:user_id/:picture_id", (req, res, next) => {
     db.run(sql, params, function (err) {
         if (err)
         {
-            console.log(sql)
             res.status(400).json({"error": err.message})
             return;
         }

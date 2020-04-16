@@ -101,7 +101,7 @@ namespace GalleryGui
 
         }
 
-        private void Settingsbtn_Click(object sender, RoutedEventArgs e)
+        private void settingsbtn_Click(object sender, RoutedEventArgs e)
         {
             updateCurrectMenu("SETTINGS");
             pagesPlace.Children.Clear();
