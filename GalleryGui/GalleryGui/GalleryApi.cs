@@ -107,7 +107,7 @@ namespace GalleryGui
         /*
          * The function reture the user id
          */
-         public string getUserId(string username)
+        public string getUserId(string username)
         {
             string userId;
 
@@ -136,8 +136,8 @@ namespace GalleryGui
         /*
          * The function update password
          */
-         public void changePass(string userid, string password)
-         {
+        public void changePass(string userid, string password)
+        {
             string urlCreate = this.url + "user/" + userid;
             string data = "password=" + password;
 
@@ -159,8 +159,31 @@ namespace GalleryGui
 
             else if (json.Count == 0)
                 throw new Exception("Error while changing password");
-         }
+        }
 
+        /*
+         * The function delete a user.
+         */
+        public void deleteUser(string userId)
+        {
+            string deleteURL = url + "user/" + userId;
+
+            string response;
+            try
+            {
+                response = deleteRequest(deleteURL);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error deleting account.");
+        }
 
         #region Post,Get,Delete,Patch Requests hendlers.
         /*
@@ -184,7 +207,7 @@ namespace GalleryGui
             }
             catch(Exception err)
             {
-                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;
@@ -202,7 +225,7 @@ namespace GalleryGui
             }
             catch (Exception err)
             {
-                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;
@@ -229,7 +252,7 @@ namespace GalleryGui
             }
             catch (Exception err)
             {
-                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;
@@ -238,7 +261,7 @@ namespace GalleryGui
         /*
          * Function get the data from the DeleteRquest and conver it to string
          */
-        private string deleteRequest(string url, string data)
+        private string deleteRequest(string url)
         {
             string result;
             try
@@ -247,7 +270,7 @@ namespace GalleryGui
             }
             catch (Exception err)
             {
-                throw new Exception(err + "Something wrong with the server\n Please check that the server is on.");
+                throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
 
             return result;

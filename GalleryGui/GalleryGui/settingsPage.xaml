@@ -46,7 +46,7 @@
             <StackPanel Margin="425,224,10,208">
                 <TextBlock Text="Delete account:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica"/>
                 <Button x:Name="delete_btn" Content="DELETE" FontSize="30" Width="150"
-                            Height="60" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            Height="60" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,5,0,0" Click="delete_btn_Click"/>
 
                 <TextBlock Text="Logout:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica" Margin="0,30,0,0"/>
                 <Button x:Name="logout_btn" Content="LOGOUT" FontSize="30" Width="150" Margin="0,5,0,0"

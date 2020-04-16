@@ -183,8 +183,6 @@ app.post("/api/tag/", (req, res, next) => {
 app.patch("/api/user/:id", (req, res, next) => {
     var data = {
         password :md5(req.body.password)}
-        
-        console.log(req.body.password)
 
     db.run(
         `UPDATE Users set
@@ -257,8 +255,10 @@ app.patch("/api/picture/:id", (req, res, next) => {
 
 // Delete user by id
 app.delete("/api/user/:id", (req, res, next) => {
-    var sql = 'DELETE FROM Users WHERE id = ' + Number(req.params.id)
+    var sql = 'DELETE FROM Users WHERE id = ' +req.params.id
     var params = []
+
+    console.log("HERE")
 
     db.run(sql, params, function (err, result) {
         if (err)

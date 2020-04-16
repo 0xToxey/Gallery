@@ -31,6 +31,8 @@ namespace GalleryGui
             this._username = username;
             displaySettings();
         }
+
+        #region ViewFunctions
         private void closeBTN_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -60,6 +62,7 @@ namespace GalleryGui
         {
             CheckPassword.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
+        #endregion
 
         private void change_btn_Click(object sender, RoutedEventArgs e)
         {   
@@ -112,6 +115,20 @@ namespace GalleryGui
         private void logout_btn_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void delete_btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                api.deleteUser(this._userId);
+                MessageBox.Show("Account deleted!");
+                Application.Current.Shutdown();
+            }
+            catch(Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
         }
     }
 }
