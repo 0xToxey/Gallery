@@ -12,45 +12,45 @@
         <Grid>
 
             <TextBlock Text="SETTINGS" FontWeight="Light" FontFamily="helvetica"
-                       FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,13,0,0"/>
+                       FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0"/>
 
-            <StackPanel Margin="38,150,422,168" >
-                <TextBlock x:Name="Username" Text="Username: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="0,0,0,0"/>
-                <TextBlock x:Name="UserID" Text="ID: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="0,0,0,0"/>
+            <StackPanel Margin="64,144,396,174" >
+                <TextBlock x:Name="Username" Text="Username: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="20,0,0,0"/>
+                <TextBlock x:Name="UserID" Text="ID: " FontSize="35" FontWeight="Light" FontFamily="helvetica" Margin="20,0,0,0"/>
 
-                <TextBlock Text="Change password:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica" Margin="80,20,80,0" Height="40"/>
+                <TextBlock Text="Change password:" FontSize="30" FontWeight="Light" FontFamily="helvetica" Margin="20,30,80,0" Height="40"/>
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <TextBox FontFamily="Helvetiva" FontWeight="Light"
                                Text="New Password" FontSize="25"
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="35"
-                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="Password" GotFocus="Password_Click"/>
+                               Margin="20,0,0,0" BorderBrush="Transparent" x:Name="Password" GotFocus="Password_Click"/>
                     <iconPacks:PackIconMaterial Kind="TextboxPassword" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-3"/>
                 </StackPanel>
-                <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
+                <Border Height="2" Background="#494949" Opacity="0.5" Margin="20,0,117,0"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
                     <PasswordBox FontFamily="Helvetiva" FontWeight="Light"
                                Password="Password" FontSize="25"
                                HorizontalAlignment="Center" Foreground="#494949"
                                Background="Transparent" Width="240" Height="35"
-                               Margin="60,0,0,0" BorderBrush="Transparent" x:Name="CheckPassword" GotFocus="CheckPassword_Click" />
+                               Margin="20,0,0,0" BorderBrush="Transparent" x:Name="CheckPassword" GotFocus="CheckPassword_Click" />
                     <iconPacks:PackIconMaterial Kind="TextboxPassword" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" Margin="-3"/>
                 </StackPanel>
-                <Border Height="2" Background="#494949" Opacity="0.5" Margin="60,0,55,0"/>
-
-                <Button x:Name="change_btn" Content="CHANGE" FontSize="30" Width="150"
-                            Height="60" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,25,0,0" Click="change_btn_Click"/>
+                <Border Height="2" Background="#494949" Opacity="0.5" Margin="20,0,117,0"/>
+                
+                <Button x:Name="change_btn" Content="CHANGE" FontSize="30" Width="140"
+                            Height="40" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="50,25,126,0" Click="change_btn_Click"/>
             </StackPanel>
 
-            <StackPanel Margin="425,224,10,208">
+            <StackPanel Margin="397,200,38,232">
                 <TextBlock Text="Delete account:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica"/>
-                <Button x:Name="delete_btn" Content="DELETE" FontSize="30" Width="150"
-                            Height="60" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,5,0,0" Click="delete_btn_Click"/>
+                <Button x:Name="delete_btn" Content="DELETE" FontSize="30" Width="140"
+                            Height="40" Style="{StaticResource LogginButton}" HorizontalAlignment="Center" Margin="0,5,0,0" Click="delete_btn_Click"/>
 
-                <TextBlock Text="Logout:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica" Margin="0,30,0,0"/>
-                <Button x:Name="logout_btn" Content="LOGOUT" FontSize="30" Width="150" Margin="0,5,0,0"
-                        Height="60" Style="{StaticResource LogginButton}" Click="logout_btn_Click"/>
+                <TextBlock Text="Logout:" HorizontalAlignment="Center" FontSize="30" FontWeight="Light" FontFamily="helvetica" Margin="0,40,0,0"/>
+                <Button x:Name="logout_btn" Content="LOGOUT" FontSize="30" Width="140" Margin="0,5,0,0"
+                        Height="40" Style="{StaticResource LogginButton}" Click="logout_btn_Click"/>
             </StackPanel>
 
             <!--StackPanel Margin="430,92,30,164">
@@ -62,7 +62,7 @@
             </-->
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30">
-                
+
             </StackPanel>
         </Grid>
     </Grid>

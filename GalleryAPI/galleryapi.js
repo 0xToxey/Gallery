@@ -258,8 +258,6 @@ app.delete("/api/user/:id", (req, res, next) => {
     var sql = 'DELETE FROM Users WHERE id = ' +req.params.id
     var params = []
 
-    console.log("HERE")
-
     db.run(sql, params, function (err, result) {
         if (err)
         {
