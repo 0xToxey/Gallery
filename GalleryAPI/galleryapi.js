@@ -18,6 +18,7 @@ app.listen(HTTP_PORT, () => {
 // Endpoints
 app.get("/", (req, res, next) => {
     res.json({"message":"Ok"})
+    console.log("enter to web.")
 });
 
 // Get data quary.
@@ -30,16 +31,18 @@ app.get("/api/:field/:table/:condition", (req, res, next) => {
     var sql = "SELECT " + field + " FROM " + table + " " + condition;
     var params = []
 
-    db.get(sql, params, (err, row) => {
+    db.all(sql, params, (err, rows) => {
         if (err) // If there is an error.
         {
+            console.log("Error select quary")
             res.status(400).json({"error":err.message});
             return;
         }
         // Else return the user data.
+        console.log("Data was return. (select)")
         res.json({
             "message":"success",
-            "data":row
+            "data":rows
         })
     });
 });
@@ -51,6 +54,7 @@ app.post("/api/user/", (req, res, next) => {
     if (errors.length)
     {
         res.status(400).json({"error":errors.join(",")});
+        console.log("Error adding user.")
         return;
     }
 
@@ -66,8 +70,10 @@ app.post("/api/user/", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error adding user.")
             return;
         }
+        console.log("User was added.")
         res.json({
             "message": "success",
             "data": data,
@@ -84,6 +90,7 @@ app.post("/api/album/", (req, res, next) => {
     if (errors.length)
     {
         res.status(400).json({"error":errors.join(",")});
+        console.log("Error adding album.")
         return;
     }
 
@@ -100,8 +107,10 @@ app.post("/api/album/", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error adding album.")
             return;
         }
+        console.log("New album added.")
         res.json({
             "message": "success",
             "data": data,
@@ -119,6 +128,7 @@ app.post("/api/picture/", (req, res, next) => {
     if (errors.length)
     {
         res.status(400).json({"error":errors.join(",")});
+        console.log("Error adding photo.")
         return;
     }
 
@@ -136,8 +146,10 @@ app.post("/api/picture/", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error adding photo.")
             return;
         }
+        console.log("New photo added.")
         res.json({
             "message": "success",
             "data": data,
@@ -154,6 +166,7 @@ app.post("/api/tag/", (req, res, next) => {
     if (errors.length)
     {
         res.status(400).json({"error":errors.join(",")});
+        console.log("Error adding tag.")
         return;
     }
 
@@ -169,8 +182,10 @@ app.post("/api/tag/", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error adding tag.")
             return;
         }
+        console.log("New tag added.")
         res.json({
             "message": "success",
             "data": data,
@@ -193,8 +208,10 @@ app.patch("/api/user/:id", (req, res, next) => {
         {
             if (err){
                 res.status(400).json({"error": res.message})
+                console.log("Error update user.")
                 return;
             }
+            console.log("User update.")
             res.json({
                 message: "success",
                 data: data,
@@ -216,8 +233,10 @@ app.patch("/api/album/:id", (req, res, next) => {
         {
             if (err){
                 res.status(400).json({"error": res.message})
+                console.log("Error update album.")
                 return;
             }
+            console.log("Album update.")
             res.json({
                 message: "success",
                 data: data,
@@ -242,8 +261,10 @@ app.patch("/api/picture/:id", (req, res, next) => {
         {
             if (err){
                 res.status(400).json({"error": res.message})
+                console.log("Error update photo.")
                 return;
             }
+            console.log("Photo update.")
             res.json({
                 message: "success",
                 data: data,
@@ -261,8 +282,10 @@ app.delete("/api/user/:id", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error delete user.")
             return;
         }
+        console.log("Delete user.")
         res.json({"message":"deleted", changes: this.changes});
     });
 });
@@ -276,9 +299,11 @@ app.delete("/api/album/:name", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error delete album.")
             return;
         }
 
+        console.log("Delete album.")
         res.json({"message":"deleted", changes: this.changes});
     });
 });
@@ -292,9 +317,11 @@ app.delete("/api/picture/:album_id/:name", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error delete photo.")
             return;
         }
 
+        console.log("Delete photo.")
         res.json({"message":"deleted", changes: this.changes});
     });
 });
@@ -308,9 +335,11 @@ app.delete("/api/tag/:user_id/:picture_id", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error delete tag.")
             return;
         }
 
+        console.log("Delete tag.")
         res.json({"message":"deleted", changes: this.changes});
     });
 });
@@ -321,6 +350,7 @@ app.post("/api/check/", (req, res, next) => {
     if (!req.body.password){errors.push("No password specified");}
     if (errors.length)
     {
+        console.log("Error checking user.")
         res.status(400).json({"error":errors.join(",")});
         return;
     }
@@ -337,9 +367,11 @@ app.post("/api/check/", (req, res, next) => {
         if (err)
         {
             res.status(400).json({"error": err.message})
+            console.log("Error checking user.")
             return;
         }   
 
+        console.log("User checked.")
         if (result.length == 0)
         {
             res.json({

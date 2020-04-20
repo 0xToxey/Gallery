@@ -19,13 +19,14 @@ namespace GalleryGui
     /// </summary>
     public partial class galleryPage : Window
     {
-        private readonly string _username;
+        private readonly string _userName, _userId;
         
-        public galleryPage(string user)
+        public galleryPage(string user, string userid)
         {
             InitializeComponent();
 
-            this._username = user;
+            this._userId = userid;
+            this._userName = user;
             UsernameDisplay.Text = user;
 
             // Start at home page.
@@ -83,8 +84,11 @@ namespace GalleryGui
             updateCurrectMenu("HOME");
             pagesPlace.Children.Clear();
 
-
-
+            homePage Child = new homePage(this._userName, this._userId);
+            object content = Child.Content;
+            Child.Content = null;
+            Child.Close();
+            this.pagesPlace.Children.Add(content as UIElement);
         }
 
         private void searchbtn_Click(object sender, RoutedEventArgs e)
@@ -106,7 +110,7 @@ namespace GalleryGui
             updateCurrectMenu("SETTINGS");
             pagesPlace.Children.Clear();
 
-            settingsPage Child = new settingsPage(_username);
+            settingsPage Child = new settingsPage(this._userName, this._userId);
             object content = Child.Content;
             Child.Content = null;
             Child.Close();

@@ -12,16 +12,6 @@ namespace GalleryGui
     {
         private string url = "http://127.0.0.1:3232/api/";
 
-        //foreach (var field in data)
-        //{
-        //    if (field.Key.ToString() == "Name")
-        //    {
-        //        string name = field.Value.ToString();
-        //        if (name == username)
-        //            return true;
-        //    }
-        //}
-
         /*
          * Function check if user exist in database.
          */
@@ -127,9 +117,9 @@ namespace GalleryGui
 
             // Convert data to json.
             JObject json = JObject.Parse(rsponse);
-            JObject data = (JObject)json.SelectToken("data"); // Take the only the "data" 
+            var data = json.SelectToken("data"); // Take the only the "data"
 
-            userId = data.SelectToken("ID").ToString();
+            userId = data.First.SelectToken("ID").ToString();
             return userId;
         }
 
@@ -183,6 +173,40 @@ namespace GalleryGui
 
             if (json.ContainsKey("error"))
                 throw new Exception("Error deleting account.");
+        }
+
+        /*
+         * The function return list of all users 
+         */
+        public List<string> getAllUsers()
+        {
+            List<string> usersList = new List<string>();
+
+            // Create the get request msg
+            string condition = url + "*/users/null";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                string name = field.SelectToken("Name").ToString();
+                usersList.Add(name);
+            }
+
+            return usersList;
         }
 
         #region Post,Get,Delete,Patch Requests hendlers.

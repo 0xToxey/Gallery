@@ -74,6 +74,7 @@ namespace GalleryGui
                 {
                     Username.BorderBrush = System.Windows.Media.Brushes.Red;
                     MessageBox.Show("Username is taken.");
+                    return;
                 }
             }
             catch (Exception err)
@@ -118,9 +119,10 @@ namespace GalleryGui
                 try
                 {
                     api.createUser(Username.Text, Password.Password.ToString());
-
                     MessageBox.Show("New account created.");
-                    galleryPage gallery = new galleryPage(Username.Text);
+
+                    string userId = api.getUserId(Username.Text);
+                    galleryPage gallery = new galleryPage(Username.Text, userId);
                     gallery.Show();
                     this.Close();
                 }

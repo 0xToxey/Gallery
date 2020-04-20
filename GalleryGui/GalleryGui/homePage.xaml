@@ -4,20 +4,63 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GalleryGui"
+        xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="homePage" Height="700" Width="860" WindowStyle="None">
+        Title="homePage" Height="700" Width="860" WindowStyle="None"
+        FontWeight="Light" FontFamily="helvetica">
     <Grid>
-        <TextBlock Text="HOME" FontWeight="Light" FontFamily="helvetica"
-                       FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0"/>
-
-        <StackPanel Margin="0,55,0,0">
-            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="photos">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="3" Columns="3"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
+        <StackPanel VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="30" Margin="0,6,28,0">
+            <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
+                 x:Name="refreshBTN" Click="refreshBTN_Click">
+                <MaterialDesing:PackIcon Kind="Refresh" Height="25" Width="25"/>
+            </Button>
         </StackPanel>
+        
+        <TextBlock Text="HOME" FontSize="40" HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" Margin="0,15,0,0"/>
+
+        <StackPanel Margin="0,100,0,0">
+            <StackPanel>
+                <TextBlock Text="All gallerys: " FontSize="30" HorizontalAlignment="Left" Margin="40,0,0,0"/>
+                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="40,0,250,0" x:Name="galleryList">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="Width" Value="150"/>
+                            <Setter Property="FontSize" Value="25"/>
+                            <Setter Property="FontFamily" Value="helvetica"/>
+                            <Setter Property="FontWeight" Value="Light"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+            
+            <StackPanel Margin="637,-136,25,0" Height="579">
+                <TextBlock Text="All users: " FontSize="30" HorizontalAlignment="Left"/>
+                <ListView Background="#FF2F7CC9" MinHeight="30"  x:Name="usersList">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="FontFamily" Value="helvetica"/>
+                            <Setter Property="FontWeight" Value="Light"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListViewItem Content="Test"/>
+                    <ListViewItem Content="Test"/>
+                    <ListViewItem Content="Test"/>
+
+                </ListView>
+            </StackPanel>
+
+        </StackPanel>
+        
     </Grid>
 </Window>

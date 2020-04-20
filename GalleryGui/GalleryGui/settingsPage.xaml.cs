@@ -19,16 +19,16 @@ namespace GalleryGui
     /// </summary>
     public partial class settingsPage : Window
     {
-        private string _username;
-        private string _userId;
+        private string _username, _userId;
         private GalleryApi api;
 
-        public settingsPage(string username)
+        public settingsPage(string username, string userid)
         {
             InitializeComponent();
             this.api = new GalleryApi();
-
             this._username = username;
+            this._userId = userid;
+
             displaySettings();
         }
 
@@ -41,15 +41,6 @@ namespace GalleryGui
         private void displaySettings()
         {
             Username.Text += this._username;
-            try
-            {
-                this._userId = api.getUserId(_username);
-            }
-            catch(Exception err)
-            {
-                MessageBox.Show(err.Message);
-            }
-
             UserID.Text += this._userId;
         }
 

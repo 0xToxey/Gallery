@@ -70,7 +70,9 @@ namespace GalleryGui
 
                 if (success)
                 {
-                    galleryPage gallery = new galleryPage(Username.Text);
+                    string userId = api.getUserId(Username.Text);
+
+                    galleryPage gallery = new galleryPage(Username.Text, userId);
                     gallery.Show();
                     this.Close();
                 }
