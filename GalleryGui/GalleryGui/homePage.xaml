@@ -15,14 +15,15 @@
                 <MaterialDesing:PackIcon Kind="Refresh" Height="25" Width="25"/>
             </Button>
         </StackPanel>
-        
+
         <TextBlock Text="HOME" FontSize="40" HorizontalAlignment="Center" 
                    VerticalAlignment="Top" Margin="0,15,0,0"/>
 
         <StackPanel Margin="0,100,0,0">
-            <StackPanel>
-                <TextBlock Text="All gallerys: " FontSize="30" HorizontalAlignment="Left" Margin="40,0,0,0"/>
-                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="40,0,250,0" x:Name="galleryList">
+
+            <StackPanel Margin="0,0,220,0">
+                <TextBlock Text="All gallerys: " FontSize="30" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="10,0,22,0" x:Name="galleryList">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -40,7 +41,7 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </StackPanel>
-            
+
             <StackPanel Margin="637,-136,25,0" Height="579">
                 <TextBlock Text="All users: " FontSize="30" HorizontalAlignment="Left"/>
                 <ListView Background="#FF2F7CC9" MinHeight="30"  x:Name="usersList">
@@ -53,14 +54,35 @@
                         </Style>
                     </ListView.ItemContainerStyle>
 
-                    <ListViewItem Content="Test"/>
-                    <ListViewItem Content="Test"/>
-                    <ListViewItem Content="Test"/>
-
                 </ListView>
             </StackPanel>
 
+            <StackPanel Margin="10,-432,242,0" Height="436">
+
+                <TextBlock Text="Top 4 Photos:" FontSize="30" HorizontalAlignment="Left"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0">
+                        <ListViewItem Content="Test 1"/>
+                    </ListView>
+
+                    <ListView BorderThickness="0" Width="295" Height="195">
+                        <ListViewItem Content="Test 2"/>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0">
+                        <ListViewItem Content="Test 3"/>
+                    </ListView>
+
+                    <ListView BorderThickness="0" Width="295" Height="195">
+                        <ListViewItem Content="Test 4"/>
+                    </ListView>
+                </StackPanel>
+            </StackPanel>
+
         </StackPanel>
-        
+
     </Grid>
 </Window>
