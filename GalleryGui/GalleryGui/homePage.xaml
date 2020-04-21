@@ -22,8 +22,8 @@
         <StackPanel Margin="0,100,0,0">
 
             <StackPanel Margin="0,0,220,0">
-                <TextBlock Text="All gallerys: " FontSize="30" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="10,0,22,0" x:Name="galleryList">
+                <TextBlock Text="All albums: " FontSize="30" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="10,0,22,0" x:Name="albumsList">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -59,27 +59,50 @@
 
             <StackPanel Margin="10,-432,242,0" Height="436">
 
-                <TextBlock Text="Top 4 Photos:" FontSize="30" HorizontalAlignment="Left"/>
+                <TextBlock Text="Last Photos:" FontSize="30" HorizontalAlignment="Left"/>
 
+                <!-- Upper StackPanel -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0">
-                        <ListViewItem Content="Test 1"/>
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0" Name="photo1"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView BorderThickness="0" Width="295" Height="195">
-                        <ListViewItem Content="Test 2"/>
+                    <ListView BorderThickness="0" Width="295" Height="195" x:Name="photo2"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
 
+                <!-- Buttom StackPanel -->
                 <StackPanel Orientation="Horizontal">
-                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0">
-                        <ListViewItem Content="Test 3"/>
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0" x:Name="photo3"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView BorderThickness="0" Width="295" Height="195">
-                        <ListViewItem Content="Test 4"/>
+                    <ListView BorderThickness="0" Width="295" Height="195" x:Name="photo4"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
+                
             </StackPanel>
 
         </StackPanel>

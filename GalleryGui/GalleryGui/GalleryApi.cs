@@ -209,6 +209,75 @@ namespace GalleryGui
             return usersList;
         }
 
+        /*
+         * The function return the location of the last 4 photos.
+         */
+        public List<string> getLastPhotos()
+        {
+            List<string> photosList = new List<string>();
+
+            // Create the get request msg
+            string condition = url + "*/Pictures/LIMIT 4";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                string location = field.SelectToken("Location").ToString();
+                photosList.Add(location);
+            }
+
+            return photosList;
+        }
+
+        /*
+         * The function return all the albums
+         */
+        public List<string> getAllAlbums()
+        {
+            List<string> albumsList = new List<string>();
+
+            // Create the get request msg
+            string condition = url + "*/Albums/null";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                string name = field.SelectToken("Name").ToString();
+                albumsList.Add(name);
+            }
+
+            return albumsList;
+        }
+
+
         #region Post,Get,Delete,Patch Requests hendlers.
         /*
         * Function get the data from the PostRquest and conver it to string
