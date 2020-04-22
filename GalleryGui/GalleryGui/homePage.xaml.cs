@@ -51,6 +51,7 @@ namespace GalleryGui
 
             foreach (var listView in _listViewArr)
             {
+                listView.ItemsSource = null;
                 listView.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(PhotoOpenClick));
             }
 

@@ -44,8 +44,8 @@
             <TextBlock FontSize="15" Margin="5,5,5,5" x:Name="UsersTags" Height="100" Text=""/>
         </StackPanel>
 
-        <StackPanel x:Name="btnsPhoto" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
-            <StackPanel Visibility="Visible" x:Name="DeletePhoto" Margin="0,0,300,0">
+        <StackPanel x:Name="ChangePhoto" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Visible">
+            <StackPanel>
                 <TextBlock Text="Delete Photo:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="18" FontWeight="Light" FontFamily="helvetica"/>
                 <Button x:Name="deleteBTN" Content="DELETE" FontSize="18" Width="80" Height="30"
                             Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
@@ -57,7 +57,7 @@
                             Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
                             Margin="0,0,0,5" Click="tagBTN_Click"/>
             </StackPanel>
-            <StackPanel Margin="10,0,0,0">
+            <StackPanel Margin="17,0,0,0">
                 <TextBlock Text="UnTag:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="18" FontWeight="Light" FontFamily="helvetica"/>
                 <Button x:Name="untagBTN" Content="UnTAG" FontSize="18" Width="80" Height="30"
                             Style="{StaticResource LogginButton}" HorizontalAlignment="Center"

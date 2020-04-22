@@ -58,7 +58,7 @@ namespace GalleryGui
             // If the album is not of user dont show delete button.
             if (opendAlbum.ownerID.ToString() != _userId)
             {
-                DeleteAlbum.Visibility = System.Windows.Visibility.Hidden;
+                ChangeAlbum.Visibility = System.Windows.Visibility.Hidden;
             }
 
             // Display details
@@ -68,7 +68,7 @@ namespace GalleryGui
             OwnerID.Text = "Owner Id: " + opendAlbum.ownerID.ToString();
             albumName.Text = "Name: " + opendAlbum.name;
 
-            // Get photos amount & tags amount
+            PicAmount.Text = "Photos amount: " + api.getAlbumPhotos(this.opendAlbum).Count().ToString();
             TagsAmount.Text = "Tags amount: " + api.albumTagsAmount(this.opendAlbum).ToString();
 
             loadPhotos();
@@ -114,7 +114,8 @@ namespace GalleryGui
 
         private void addAlbumBTN_Click(object sender, RoutedEventArgs e)
         {
-
+            GetUserNamePopup addAlbum = new GetUserNamePopup(true, this.opendAlbum, null, false);
+            addAlbum.Show();
         }
     }
 }

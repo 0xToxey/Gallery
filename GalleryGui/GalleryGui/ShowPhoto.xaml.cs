@@ -75,12 +75,12 @@ namespace GalleryGui
                 if (usersList.Count() > 0)
                     UsersTags.Text += usersList[i];
 
-                TagsAmount.Text += usersList.Count();
+                TagsAmount.Text = "Tags amount: " + usersList.Count().ToString();
 
                 // If photo is not of user hide delete button.
                 if (_userId != api.getPhotoOwner(photo).ToString())
                 {
-                    DeletePhoto.Visibility = System.Windows.Visibility.Hidden;
+                    ChangePhoto.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
             catch
@@ -102,12 +102,14 @@ namespace GalleryGui
 
         private void tagBTN_Click(object sender, RoutedEventArgs e)
         {
-
+            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, true);
+            addAlbum.Show();
         }
 
         private void untagBTN_Click(object sender, RoutedEventArgs e)
         {
-
+            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, false);
+            addAlbum.Show();
         }
 
         private void refreshBTN_Click(object sender, RoutedEventArgs e)

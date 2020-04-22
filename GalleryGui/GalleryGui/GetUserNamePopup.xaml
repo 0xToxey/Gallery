@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GalleryGui"
         xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         Title="GetUserNamePopup" Height="300" Width="400" 
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen">
     <Grid>
         <Border CornerRadius="10" Background="White"/>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="55" HorizontalAlignment="Right" Grid.Column="1" Width="30">
@@ -17,14 +19,40 @@
             </Button>
         </StackPanel>
 
-        <StackPanel x:Name="Un_Tag_User" Visibility="Hidden">
-            
+        <StackPanel x:Name="Un_Tag_User" Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock Foreground="#FF2F7CC9" Text="Enter Username:" FontSize="30" Margin="0,50,0,0" HorizontalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center">
+                <TextBox FontFamily="Helvetiva" FontWeight="Light"
+                                   Text="Username" FontSize="25"
+                                   Foreground="#494949" HorizontalContentAlignment="Center"
+                                   Background="Transparent" Width="240" Height="25"
+                                   BorderBrush="Transparent" x:Name="Username" GotFocus="Username_GotFocus"/>
+            </StackPanel>
         </StackPanel>
 
         <StackPanel x:Name="AddPhoto" Visibility="Hidden">
+            <TextBlock Foreground="#FF2F7CC9" Text="Add new picture." FontSize="30" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Margin="10,30,0,0" HorizontalAlignment="Center">
+                <TextBox FontFamily="Helvetiva" FontWeight="Light" Text="Name" FontSize="25"
+                         HorizontalAlignment="Center" Foreground="#494949" Background="Transparent" Width="240" Height="25"
+                         BorderBrush="Transparent" x:Name="PicName" GotFocus="PicName_GotFocus"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,30,0,0" HorizontalAlignment="Center">
+                <TextBox FontFamily="Helvetiva" FontWeight="Light" Text="Location" FontSize="25"
+                         HorizontalAlignment="Center" Foreground="#494949" Background="Transparent" Width="240" Height="25"
+                         BorderBrush="Transparent" x:Name="Location" GotFocus="Location_GotFocus"/>
+            </StackPanel>
             
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,15" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button x:Name="acceptBTN" Style="{StaticResource LogginButton}" Width="100" Height="40"
+                        Margin="65,0,52,0" Click="acceptBTN_Click">
+                <MaterialDesing:PackIcon Kind="CheckBold" Height="25" Width="25"/>
+            </Button>
+        </StackPanel>
 
     </Grid>
 </Window>

@@ -34,7 +34,7 @@ namespace GalleryGui
 
             // Convert data to json.
             JObject json = JObject.Parse(rsponse);
-            JObject data = (JObject) json.SelectToken("data"); // Take the only the "data" 
+            JArray data = (JArray) json.SelectToken("data"); // Take the only the "data" 
 
             // If the data is empty, username not exist.
             if (data == null)
@@ -443,6 +443,77 @@ namespace GalleryGui
 
             return album;
         }
+
+        /*
+         * The function check if the name exist in the album
+         */
+        public bool CheckNameInAlbum(Album album, string nameToCheack)
+        {
+            List<Img> imgList = getAlbumPhotos(album);
+
+            foreach(Img photo in imgList)
+            {
+                if (photo.name == nameToCheack)
+                    return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region Create things
+        
+        /*
+         * The function create new photo
+         */
+        public void createImage(Img newPhoto)
+        {
+            string urlCreate = this.url + "picture/";
+            string data = "name=" + newPhoto.name + "&creation_date=" + newPhoto.date + "&location=" + newPhoto.Path + "&album_id=" + newPhoto.albumID;
+
+            string response;
+            try
+            {
+                response = postRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while creating the photo.");
+        }
+
+        /*
+         * The function create new tag
+         */
+        public void addTag(string imgID, string userID)
+        {
+            string urlCreate = this.url + "tag/";
+            string data = "picture_id=" + imgID + "&user_id=" + userID;
+
+            string response;
+            try
+            {
+                response = postRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while creating tag.");
+        }
+
         #endregion
 
         #region delete things.
