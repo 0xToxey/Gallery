@@ -67,7 +67,7 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -76,7 +76,7 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -88,7 +88,7 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -97,7 +97,7 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSource}" Width="294" Height="194"/>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

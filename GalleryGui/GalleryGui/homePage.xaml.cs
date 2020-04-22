@@ -24,6 +24,7 @@ namespace GalleryGui
         private ListView _usersList;
         private GalleryApi api;
         private ListView[] _listViewArr;
+        private List<img> _imgsList;
 
         public homePage(string username, string userid)
         {
@@ -78,25 +79,24 @@ namespace GalleryGui
             this._albumsList.Items.Clear();
             _albumsList.DisplayMemberPath = "Text";
 
-            List<string> albumsList = api.getAllAlbums();
-            foreach (var album in albumsList)
+            List<album> albumsList = api.getAllAlbums();
+            foreach (album albumVar in albumsList)
             {
                 ListViewItem name = new ListViewItem();
-                name.Content = album;
+                name.Content = albumVar.name;
                 _albumsList.Items.Add(name);
             }
 
-            _albumsList.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnMouseLeftButtonDown), true);
+            _albumsList.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(AlbumOpenClick), true);
         }
 
         private void loadPhotos()
         {
             // Get last photos.
-            List<imgs>[] imgSource = new List<imgs>[4];
-            List<string> imgLocations;
+            this._imgsList = new List<img>();
             int place = 0;
 
-            try { imgLocations = api.getLastPhotos(); }
+            try { _imgsList = api.getLastPhotos(); }
             catch (Exception err)
             {
                 MessageBox.Show("Tap refresh button.\n" + err.Message);
@@ -104,33 +104,40 @@ namespace GalleryGui
             }
                 
             // Display last photos.
-            foreach (string source in imgLocations)
+            foreach (img photo in _imgsList)
             {
-                if (source != null)
-                {
-                    imgSource[place] = new List<imgs>();
-                    imgSource[place].Add(new imgs() { ImageSource = source });
-                    this._listViewArr[place].ItemsSource = imgSource[place];
-                }
+                List<img> tempImg = new List<img>();
+                tempImg.Add(photo);
 
+                this._listViewArr[place].ItemsSource = tempImg;
+
+                _listViewArr[place].AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(PhotoOpenClick), true);
                 place++;
             }
         }
 
-        private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void AlbumOpenClick(object sender, RoutedEventArgs e)
         {
             var item = (sender as ListBox).SelectedItem;
             if (item != null)
             {
-                MessageBox.Show("**Open albhum here**");
+                MessageBox.Show("**Open albu, here**");
             }
         }
 
+        private void PhotoOpenClick(object sender, RoutedEventArgs e)
+        {
+            img item = ((sender as ListView).SelectedItem as img);
+            if (item != null)
+            {
+                ShowPhoto photoOpen = new ShowPhoto(item);
+                photoOpen.Show();
+            }
+        }
     }
 
-    public class imgs
+    class ImageDisplay
     {
         public string ImageSource { get; set; }
     }
-
 }

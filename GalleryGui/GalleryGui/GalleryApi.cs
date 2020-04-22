@@ -212,9 +212,9 @@ namespace GalleryGui
         /*
          * The function return the location of the last 4 photos.
          */
-        public List<string> getLastPhotos()
+        public List<img> getLastPhotos()
         {
-            List<string> photosList = new List<string>();
+            List<img> photosList = new List<img>();
 
             // Create the get request msg
             string condition = url + "*/Pictures/LIMIT 4";
@@ -236,8 +236,14 @@ namespace GalleryGui
 
             foreach (var field in data)
             {
-                string location = field.SelectToken("Location").ToString();
-                photosList.Add(location);
+                img photo = new img();
+                photo.name = field.SelectToken("Name").ToString();
+                photo.ID = int.Parse(field.SelectToken("ID").ToString());
+                photo.date = field.SelectToken("Creation_date").ToString();
+                photo.Path = field.SelectToken("Location").ToString();
+                photo.albumID = int.Parse(field.SelectToken("Album_id").ToString());
+
+                photosList.Add(photo);
             }
 
             return photosList;
@@ -246,9 +252,9 @@ namespace GalleryGui
         /*
          * The function return all the albums
          */
-        public List<string> getAllAlbums()
+        public List<album> getAllAlbums()
         {
-            List<string> albumsList = new List<string>();
+            List<album> albumsList = new List<album>();
 
             // Create the get request msg
             string condition = url + "*/Albums/null";
@@ -270,8 +276,13 @@ namespace GalleryGui
 
             foreach (var field in data)
             {
-                string name = field.SelectToken("Name").ToString();
-                albumsList.Add(name);
+                album album = new album();
+                album.name = field.SelectToken("Name").ToString();
+                album.ID = int.Parse(field.SelectToken("ID").ToString());
+                album.date = field.SelectToken("Creation_date").ToString();
+                album.ownerID = int.Parse(field.SelectToken("User_id").ToString());
+
+                albumsList.Add(album);
             }
 
             return albumsList;
@@ -298,7 +309,7 @@ namespace GalleryGui
             {
                 result = Task.Run(async () => await PostRequest(url, postData)).Result;
             }
-            catch(Exception err)
+            catch
             {
                 throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
@@ -316,7 +327,7 @@ namespace GalleryGui
             {
                 result = Task.Run(async () => await GetRequest(data)).Result;
             }
-            catch (Exception err)
+            catch
             {
                 throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
@@ -343,7 +354,7 @@ namespace GalleryGui
             {
                 result = Task.Run(async () => await PatchRequest(url, postData)).Result;
             }
-            catch (Exception err)
+            catch
             {
                 throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
@@ -361,7 +372,7 @@ namespace GalleryGui
             {
                 result = Task.Run(async () => await DeleteRequest(url)).Result;
             }
-            catch (Exception err)
+            catch
             {
                 throw new Exception("Something wrong with the server\n Please check that the server is on.");
             }
@@ -472,5 +483,22 @@ namespace GalleryGui
             return response;
         }
 
+    }
+
+    public class img
+    {
+        public string Path { get; set; }
+        public string name { get; set; }
+        public string date { get; set; }
+        public int albumID { get; set; }
+        public int ID { get; set; }
+    }
+
+    public class album
+    { 
+        public int ID { get; set; }
+        public string name { get; set; }
+        public string date { get; set; }
+        public int ownerID { get; set; }
     }
 }
