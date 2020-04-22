@@ -21,7 +21,13 @@
                 <MaterialDesing:PackIcon Kind="Close" Height="25" Width="25"/>
             </Button>
         </StackPanel>
-
+        <StackPanel VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="30" Margin="0,7,28,0">
+            <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
+                 x:Name="refreshBTN" Click="refreshBTN_Click">
+                <MaterialDesing:PackIcon Kind="Refresh" Height="24" Width="25"/>
+            </Button>
+        </StackPanel>
+        
         <Label  FontSize="20" Foreground="#FF2F7CC9" Height="32" Width="393" HorizontalAlignment="Left" Margin="10,10,0,0" Name="AlbumNameDisplay"
                 VerticalAlignment="Top" BorderThickness="0" Content="Name place"/>
 
@@ -47,11 +53,19 @@
             <TextBlock Text="Photos amount: " FontSize="20" Margin="5,10,0,0" x:Name="PicAmount"/>
             <TextBlock Text="Tags Amount: " FontSize="20" Margin="5,10,0,0" x:Name="TagsAmount"/>
 
-            <StackPanel Visibility="Visible" x:Name="DeleteAlbum" Margin="0,30,0,0">
-                <TextBlock Text="Delete Album:" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
-                <Button x:Name="deleteBTN" Content="DELETE" FontSize="20" Width="100" Height="30"
-                        Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
-                        Margin="0,5,0,0" Click="deleteBTN_Click"/>
+            <StackPanel Margin="-30,30,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Visibility="Visible" x:Name="DeleteAlbum">
+                    <TextBlock Text="Delete Album:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
+                    <Button x:Name="deleteBTN" Content="DELETE" FontSize="20" Width="100" Height="30"
+                            Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
+                            Margin="0,5,0,0" Click="deleteBTN_Click"/>
+                </StackPanel>
+                <StackPanel Margin="10,0,0,0">
+                    <TextBlock Text="Add Album:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
+                    <Button x:Name="addAlbumBTN" Content="ADD" FontSize="20" Width="100" Height="30"
+                            Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
+                            Margin="0,5,0,0" Click="addAlbumBTN_Click"/>
+                </StackPanel>
             </StackPanel>
 
         </StackPanel>

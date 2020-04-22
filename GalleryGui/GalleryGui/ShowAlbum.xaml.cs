@@ -49,7 +49,8 @@ namespace GalleryGui
 
         private void deleteBTN_Click(object sender, RoutedEventArgs e)
         {
-            
+            api.deleteAlbum(this.opendAlbum);
+            this.Close();
         }
 
         public void loadAlbumDetails()
@@ -62,13 +63,13 @@ namespace GalleryGui
 
             // Display details
             AlbumNameDisplay.Content = opendAlbum.name;
-            IdText.Text += opendAlbum.ID.ToString();
-            CreationDate.Text += opendAlbum.date;
-            OwnerID.Text += opendAlbum.ownerID.ToString();
-            albumName.Text += opendAlbum.name;
+            IdText.Text = "Id: " + opendAlbum.ID.ToString();
+            CreationDate.Text = "Date: " + opendAlbum.date;
+            OwnerID.Text = "Owner Id: " + opendAlbum.ownerID.ToString();
+            albumName.Text = "Name: " + opendAlbum.name;
 
             // Get photos amount & tags amount
-            TagsAmount.Text += api.albumTagsAmount(this.opendAlbum);
+            TagsAmount.Text = "Tags amount: " + api.albumTagsAmount(this.opendAlbum).ToString();
 
             loadPhotos();
         }
@@ -76,8 +77,9 @@ namespace GalleryGui
         private void loadPhotos()
         {
             List<Img> imgList = api.getAlbumPhotos(this.opendAlbum);
+            photosList.Items.Clear();
 
-            foreach(Img img in imgList)
+            foreach (Img img in imgList)
             {
                 List<Img> tempImg = new List<Img>();
                 tempImg.Add(img);
@@ -104,5 +106,15 @@ namespace GalleryGui
             }
         }
 
+        private void refreshBTN_Click(object sender, RoutedEventArgs e)
+        {
+            photosList.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(PhotoOpenClick));
+            loadAlbumDetails();
+        }
+
+        private void addAlbumBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

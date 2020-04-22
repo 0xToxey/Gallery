@@ -21,6 +21,7 @@ namespace GalleryGui
     {
         private string _userId;
         private GalleryApi api;
+        private Img _img;
 
         public ShowPhoto(Img photo, string userId)
         {
@@ -28,6 +29,7 @@ namespace GalleryGui
 
             this._userId = userId;
             api = new GalleryApi();
+            this._img = photo;
 
             displayImage(photo);
         }
@@ -48,12 +50,13 @@ namespace GalleryGui
                 ImageNameLabel.Content = photo.name;
                 Image.Source = new BitmapImage(uriSource);
 
-                IdText.Text += photo.ID;
-                CreationDate.Text += photo.date;
-                AlbumID.Text += photo.albumID;
-                photoName.Text += photo.name;
+                IdText.Text = "Id: " + photo.ID;
+                CreationDate.Text = "Date: " + photo.date;
+                AlbumID.Text = "Album Id:" + photo.albumID.ToString();
+                photoName.Text = "Name: " + photo.name;
                 
                 List<string> usersList = api.getTaggedUsers(photo);
+                UsersTags.Text = "";
                 int i = 0;
                 for (i = 0; i < usersList.Count() - 1; i++)
                 {
@@ -93,6 +96,23 @@ namespace GalleryGui
 
         private void deleteBTN_Click(object sender, RoutedEventArgs e)
         {
+            api.deletePhoto(this._img);
+            this.Close();
+        }
+
+        private void tagBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void untagBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void refreshBTN_Click(object sender, RoutedEventArgs e)
+        {
+            displayImage(this._img);
         }
     }
 }

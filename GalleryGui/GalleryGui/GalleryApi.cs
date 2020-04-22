@@ -475,7 +475,31 @@ namespace GalleryGui
          */
         public void deleteAlbum(Album album)
         {
+            List<Img> photosList = getAlbumPhotos(album);
 
+            // Delete all photos in album
+            foreach(Img photo in photosList)
+            {
+                deletePhoto(photo);
+            }
+
+            string deleteURL = url + "album/" + album.name;
+
+            string response;
+            try
+            {
+                response = deleteRequest(deleteURL);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error deleting album.");
         }
 
         /*
@@ -483,7 +507,32 @@ namespace GalleryGui
          */
         public void deletePhoto(Img photo)
         {
+            List<string> usersTaged = getTaggedUsers(photo);
 
+            // Delete all tags in picture.
+            foreach (string userName in usersTaged)
+            {
+                string userID = getUserId(userName);
+                deleteTag(photo.ID.ToString(), userID);
+            }
+
+            string deleteURL = url + "picture/" + photo.albumID + "/" + photo.name;
+
+            string response;
+            try
+            {
+                response = deleteRequest(deleteURL);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error deleting photo.");
         }
 
         /* 
@@ -491,7 +540,23 @@ namespace GalleryGui
          */
         public void deleteTag(string photoID, string userID)
         {
+            string deleteURL = url + "tag/" + userID + "/" + photoID;
 
+            string response;
+            try
+            {
+                response = deleteRequest(deleteURL);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error deleting tag.");
         }
         #endregion
 

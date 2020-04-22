@@ -47,6 +47,13 @@ namespace GalleryGui
 
         private void RefreshLists()
         {
+            _albumsList.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(AlbumOpenClick));
+
+            foreach (var listView in _listViewArr)
+            {
+                listView.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(PhotoOpenClick));
+            }
+
             loadUsers();
             loadAlbums();
             loadPhotos();
