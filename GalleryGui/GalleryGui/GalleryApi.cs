@@ -12,6 +12,7 @@ namespace GalleryGui
     {
         private string url = "http://127.0.0.1:3232/api/";
 
+        #region Loggin/register things
         /*
          * Function check if user exist in database.
          */
@@ -93,7 +94,9 @@ namespace GalleryGui
                 return true;
             return false;
         }
+        #endregion
 
+        #region Get things
         /*
          * The function reture the user id
          */
@@ -152,30 +155,6 @@ namespace GalleryGui
         }
 
         /*
-         * The function delete a user.
-         */
-        public void deleteUser(string userId)
-        {
-            string deleteURL = url + "user/" + userId;
-
-            string response;
-            try
-            {
-                response = deleteRequest(deleteURL);
-            }
-            catch (Exception err)
-            {
-                throw err;
-            }
-
-            // Convert data to json.
-            JObject json = JObject.Parse(response);
-
-            if (json.ContainsKey("error"))
-                throw new Exception("Error deleting account.");
-        }
-
-        /*
          * The function return list of all users 
          */
         public List<string> getAllUsers()
@@ -210,51 +189,11 @@ namespace GalleryGui
         }
 
         /*
-         * The function return the location of the last 4 photos.
-         */
-        public List<img> getLastPhotos()
-        {
-            List<img> photosList = new List<img>();
-
-            // Create the get request msg
-            string condition = url + "*/Pictures/LIMIT 4";
-
-            // Get the response from the server.
-            string rsponse;
-            try
-            {
-                rsponse = getRequest(condition);
-            }
-            catch (Exception err)
-            {
-                throw err;
-            }
-
-            // Convert data to json.
-            JObject json = JObject.Parse(rsponse);
-            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
-
-            foreach (var field in data)
-            {
-                img photo = new img();
-                photo.name = field.SelectToken("Name").ToString();
-                photo.ID = int.Parse(field.SelectToken("ID").ToString());
-                photo.date = field.SelectToken("Creation_date").ToString();
-                photo.Path = field.SelectToken("Location").ToString();
-                photo.albumID = int.Parse(field.SelectToken("Album_id").ToString());
-
-                photosList.Add(photo);
-            }
-
-            return photosList;
-        }
-
-        /*
          * The function return all the albums
          */
-        public List<album> getAllAlbums()
+        public List<Album> getAllAlbums()
         {
-            List<album> albumsList = new List<album>();
+            List<Album> albumsList = new List<Album>();
 
             // Create the get request msg
             string condition = url + "*/Albums/null";
@@ -276,20 +215,288 @@ namespace GalleryGui
 
             foreach (var field in data)
             {
-                album album = new album();
-                album.name = field.SelectToken("Name").ToString();
-                album.ID = int.Parse(field.SelectToken("ID").ToString());
-                album.date = field.SelectToken("Creation_date").ToString();
-                album.ownerID = int.Parse(field.SelectToken("User_id").ToString());
+                Album Album = new Album();
+                Album.name = field.SelectToken("Name").ToString();
+                Album.ID = int.Parse(field.SelectToken("ID").ToString());
+                Album.date = field.SelectToken("Creation_date").ToString();
+                Album.ownerID = int.Parse(field.SelectToken("User_id").ToString());
 
-                albumsList.Add(album);
+                albumsList.Add(Album);
             }
 
             return albumsList;
         }
 
+        /* 
+         * The function return all the photos in album
+         */
+        public List<Img> getAlbumPhotos(Album album)
+        {
+            List<Img> photosList = new List<Img>();
+
+            // Create the get request msg
+            string condition = url + "*/Pictures/WHERE Album_id = " + album.ID;
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                Img photo = new Img();
+                photo.name = field.SelectToken("Name").ToString();
+                photo.ID = int.Parse(field.SelectToken("ID").ToString());
+                photo.date = field.SelectToken("Creation_date").ToString();
+                photo.Path = field.SelectToken("Location").ToString();
+                photo.albumID = int.Parse(field.SelectToken("Album_id").ToString());
+
+                photosList.Add(photo);
+            }
+
+            return photosList;
+        }
+
+        /*
+         * The function return an owner of photo
+         */
+        public int getPhotoOwner(Img photo)
+        {
+            int ownerID = 0;
+
+            // Create the get request msg
+            string condition = url + "Albums.User_id as owner/Albums/JOIN Pictures ON Pictures.Album_id = Albums.ID WHERE Pictures.ID = " + photo.ID;
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            if (data != null)
+            {
+                ownerID = int.Parse(data.First.SelectToken("owner").ToString());
+            }
+
+            return ownerID;
+        }
+
+        /*
+         * The function return the users that are tagged in picture.
+         */
+        public List<string> getTaggedUsers(Img photo)
+        {
+            List<string> usersList = new List<string>();
+
+            // Create the get request msg
+            string condition = url + "Users.Name/Users/JOIN Tags ON Users.ID = Tags.User_id WHERE Tags.Picture_id = " + photo.ID;
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                string name = field.SelectToken("Name").ToString();
+                usersList.Add(name);
+            }
+
+            return usersList;
+        }
+
+        /*
+         * The function return the amount of tags in album
+         */
+        public int albumTagsAmount(Album album)
+        {
+            int amount = 0;
+
+            // Create the get request msg
+            string condition = url + "count(Tags.ID) as amount/Tags/JOIN Pictures ON Tags.Picture_id = Pictures.ID JOIN Albums ON Pictures.Album_id = Albums.ID WHERE Albums.id = " + album.ID;
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            if (data != null)
+            {
+                amount = int.Parse(data.First.SelectToken("amount").ToString());
+            }
+
+            return amount;
+        }
+
+        /*
+         * The function return the location of the last 4 photos.
+         * (HomePage)
+         */
+        public List<Img> getLastPhotos()
+        {
+            List<Img> photosList = new List<Img>();
+
+            // Create the get request msg
+            string condition = url + "*/Pictures/LIMIT 4";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                Img photo = new Img();
+                photo.name = field.SelectToken("Name").ToString();
+                photo.ID = int.Parse(field.SelectToken("ID").ToString());
+                photo.date = field.SelectToken("Creation_date").ToString();
+                photo.Path = field.SelectToken("Location").ToString();
+                photo.albumID = int.Parse(field.SelectToken("Album_id").ToString());
+
+                photosList.Add(photo);
+            }
+
+            return photosList;
+        }
+
+        /*
+         * The function return album data
+         */
+        public Album openAlbum(string albumName)
+        {
+            Album album = new Album();
+
+            // Create the get request msg
+            string condition = url + "*/Albums/WHERE Name = '" + albumName + "'";
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data"); // Take the only the "data"
+
+            foreach (var field in data)
+            {
+                album.name = field.SelectToken("Name").ToString();
+                album.ID = int.Parse(field.SelectToken("ID").ToString());
+                album.date = field.SelectToken("Creation_date").ToString();
+                album.ownerID = int.Parse(field.SelectToken("User_id").ToString());
+            }
+
+            return album;
+        }
+        #endregion
+
+        #region delete things.
+        /*
+         * The function delete a user.
+         */
+        public void deleteUser(string userId)
+        {
+            string deleteURL = url + "user/" + userId;
+
+            string response;
+            try
+            {
+                response = deleteRequest(deleteURL);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error deleting account.");
+        }
+
+        /*
+         * The function delete an album
+         */
+        public void deleteAlbum(Album album)
+        {
+
+        }
+
+        /*
+         * The function delete a photo
+         */
+        public void deletePhoto(Img photo)
+        {
+
+        }
+
+        /* 
+         * The function delete a tag
+         */
+        public void deleteTag(string photoID, string userID)
+        {
+
+        }
+        #endregion
 
         #region Post,Get,Delete,Patch Requests hendlers.
+
         /*
         * Function get the data from the PostRquest and conver it to string
         */
@@ -485,7 +692,7 @@ namespace GalleryGui
 
     }
 
-    public class img
+    public class Img
     {
         public string Path { get; set; }
         public string name { get; set; }
@@ -494,7 +701,7 @@ namespace GalleryGui
         public int ID { get; set; }
     }
 
-    public class album
+    public class Album
     { 
         public int ID { get; set; }
         public string name { get; set; }

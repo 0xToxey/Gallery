@@ -9,9 +9,12 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Title="ShowPhoto" Height="450" Width="800"
-        FontWeight="Light" FontFamily="helvetica">
+        FontWeight="Light" FontFamily="helvetica"
+        AllowsTransparency="True" Background="Transparent" MouseDown="Window_MouseDown">
     <Grid>
-
+        
+        <Border CornerRadius="10" Background="White"/>
+        
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="55" HorizontalAlignment="Right" Grid.Column="1" Width="30">
             <Button Style="{StaticResource CloseButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
                     Margin="0,-19,0,0" x:Name="closeBTN" Click="closeBTN_Click" RenderTransformOrigin="-0.78,0.66">
@@ -29,6 +32,18 @@
             <TextBlock Text="date: " FontSize="20" Margin="5,10,0,0" x:Name="CreationDate"/>
             <TextBlock Text="Album Id: " FontSize="20" Margin="5,10,0,0" x:Name="AlbumID"/>
             <TextBlock Text="Name: " FontSize="20" Margin="5,10,0,0" x:Name="photoName"/>
+            <TextBlock Text="Tags amount: " FontSize="20" Margin="5,10,0,0" x:Name="TagsAmount"/>
+
+            <TextBlock Text="Taged users:" FontSize="20" Margin="0,20,0,0" Foreground="#FF2F7CC9"/>
+            <TextBlock FontSize="15" Margin="5,5,5,5" x:Name="UsersTags" Height="70" Text=""/>
+
+            <StackPanel Visibility="Visible" x:Name="DeletePhoto">
+                <TextBlock Text="Delete Photo:" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
+                <Button x:Name="deleteBTN" Content="DELETE" FontSize="20" Width="85" Height="32"
+                        Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
+                        Margin="0,5,0,0" Click="deleteBTN_Click"/>
+            </StackPanel>
+
         </StackPanel>
     
     </Grid>

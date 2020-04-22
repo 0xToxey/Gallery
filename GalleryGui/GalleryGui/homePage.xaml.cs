@@ -24,7 +24,7 @@ namespace GalleryGui
         private ListView _usersList;
         private GalleryApi api;
         private ListView[] _listViewArr;
-        private List<img> _imgsList;
+        private List<Img> _imgsList;
 
         public homePage(string username, string userid)
         {
@@ -48,8 +48,8 @@ namespace GalleryGui
         private void RefreshLists()
         {
             loadUsers();
-            loadPhotos();
             loadAlbums();
+            loadPhotos();
         }
 
         private void refreshBTN_Click(object sender, RoutedEventArgs e)
@@ -79,11 +79,12 @@ namespace GalleryGui
             this._albumsList.Items.Clear();
             _albumsList.DisplayMemberPath = "Text";
 
-            List<album> albumsList = api.getAllAlbums();
-            foreach (album albumVar in albumsList)
+            List<Album> albumsList = api.getAllAlbums();
+            foreach (Album album in albumsList)
             {
                 ListViewItem name = new ListViewItem();
-                name.Content = albumVar.name;
+                name.Content = album.name;
+
                 _albumsList.Items.Add(name);
             }
 
@@ -93,7 +94,7 @@ namespace GalleryGui
         private void loadPhotos()
         {
             // Get last photos.
-            this._imgsList = new List<img>();
+            this._imgsList = new List<Img>();
             int place = 0;
 
             try { _imgsList = api.getLastPhotos(); }
@@ -104,9 +105,9 @@ namespace GalleryGui
             }
                 
             // Display last photos.
-            foreach (img photo in _imgsList)
+            foreach (Img photo in _imgsList)
             {
-                List<img> tempImg = new List<img>();
+                List<Img> tempImg = new List<Img>();
                 tempImg.Add(photo);
 
                 this._listViewArr[place].ItemsSource = tempImg;
@@ -118,21 +119,30 @@ namespace GalleryGui
 
         private void AlbumOpenClick(object sender, RoutedEventArgs e)
         {
-            var item = (sender as ListBox).SelectedItem;
+            ListViewItem item = (sender as ListBox).SelectedItem as ListViewItem;
             if (item != null)
             {
-                MessageBox.Show("**Open albu, here**");
+                try
+                {
+                    Album album = api.openAlbum(item.Content.ToString());
+                    ShowAlbum photoOpen = new ShowAlbum(album, _userId);
+                    photoOpen.Show();
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to load album");
+                }
             }
         }
 
         private void PhotoOpenClick(object sender, RoutedEventArgs e)
         {
-            img item = ((sender as ListView).SelectedItem as img);
+            Img item = (sender as ListView).SelectedItem as Img;
             if (item != null)
             {
                 try
                 {
-                    ShowPhoto photoOpen = new ShowPhoto(item);
+                    ShowPhoto photoOpen = new ShowPhoto(item, _userId);
                     photoOpen.Show();
                 }
                 catch
