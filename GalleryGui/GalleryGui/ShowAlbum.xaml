@@ -1,4 +1,4 @@
-﻿<Window x:Class="GalleryGui.ShowPhoto"
+﻿<Window x:Class="GalleryGui.ShowAlbum"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:GalleryGui"
         xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Title="ShowAlbum" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="ShowPhoto" Height="450" Width="800"
         FontWeight="Light" FontFamily="helvetica">
     <Grid>
 
@@ -19,17 +19,23 @@
             </Button>
         </StackPanel>
 
-        <Label  FontSize="20" Foreground="#FF2F7CC9" Height="32" Width="393" HorizontalAlignment="Left" Margin="10,10,0,0" Name="ImageNameLabel"
+        <Label  FontSize="20" Foreground="#FF2F7CC9" Height="32" Width="393" HorizontalAlignment="Left" Margin="10,10,0,0" Name="AlbumNameDisplay"
                 VerticalAlignment="Top" BorderThickness="0" Content="Name place"/>
-        <Image Margin="10,50,0,0" Name="Image" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="350"/>
 
-        <StackPanel Margin="527,0,0,0">
-            <TextBlock Text="Picture info:" FontSize="20" Margin="0,50,0,0" Foreground="#FF2F7CC9"/>
+        <StackPanel Margin="10,50,0,0" Name="Image" HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    Width="483" Height="350">
+            
+            
+            
+        </StackPanel>
+
+        <StackPanel Margin="517,0,0,0">
+            <TextBlock Text="Album info:" FontSize="20" Margin="0,50,0,0" Foreground="#FF2F7CC9"/>
             <TextBlock Text="Id: " FontSize="20" Margin="5,10,0,0" x:Name="IdText"/>
             <TextBlock Text="date: " FontSize="20" Margin="5,10,0,0" x:Name="CreationDate"/>
-            <TextBlock Text="Album Id: " FontSize="20" Margin="5,10,0,0" x:Name="AlbumID"/>
-            <TextBlock Text="Name: " FontSize="20" Margin="5,10,0,0" x:Name="photoName"/>
+            <TextBlock Text="Owner Id: " FontSize="20" Margin="5,10,0,0" x:Name="OwenerID"/>
+            <TextBlock Text="Name: " FontSize="20" Margin="5,10,0,0" x:Name="albumName"/>
         </StackPanel>
-    
+
     </Grid>
 </Window>

@@ -130,8 +130,15 @@ namespace GalleryGui
             img item = ((sender as ListView).SelectedItem as img);
             if (item != null)
             {
-                ShowPhoto photoOpen = new ShowPhoto(item);
-                photoOpen.Show();
+                try
+                {
+                    ShowPhoto photoOpen = new ShowPhoto(item);
+                    photoOpen.Show();
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to load image");
+                }
             }
         }
     }

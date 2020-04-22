@@ -37,11 +37,11 @@ namespace GalleryGui
                 IdText.Text += photo.ID;
                 CreationDate.Text += photo.date;
                 AlbumID.Text += photo.albumID;
-                Name.Text += photo.name;
+                photoName.Text += photo.name;
             }
             catch
             {
-                MessageBox.Show("Failed to load image");
+                throw;
             }
         }
 
