@@ -96,6 +96,11 @@ namespace GalleryGui
             updateCurrectMenu("SEARCH");
             pagesPlace.Children.Clear();
 
+            SearchPage Child = new SearchPage();
+            object content = Child.Content;
+            Child.Content = null;
+            Child.Close();
+            this.pagesPlace.Children.Add(content as UIElement);
         }
 
         private void profilebtn_Click(object sender, RoutedEventArgs e)
