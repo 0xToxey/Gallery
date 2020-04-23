@@ -18,16 +18,18 @@ Gallery project by Gabriel Bialyk
 
 ## Quick start
 
-- Open The releases tab and download the exe file.
+- Open The releases tab and download the GalleryConsole.exe file - (Console app)
+- Open The releases tab and download the GallerySetup.exe & serverFolder (run server.exe) - (Gui app & server)
 
 ## Status
 
-- Finish V1 - Gallery Console app.
+- Finish V2 - Gallery GUI & RestAPI.
 
 ## What's included
 
 ```text
-.CPP, .HPP, .Sln (plus extra for vs), (releases)
+.CPP, .HPP, .Sln (plus extra for vs), 
+.CS, .Js (for the server), (releases)
 ```
 
 ## Creator

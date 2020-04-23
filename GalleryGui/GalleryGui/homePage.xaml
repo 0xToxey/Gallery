@@ -1,0 +1,111 @@
+﻿<Window x:Class="GalleryGui.homePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GalleryGui"
+        xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="homePage" Height="700" Width="860" WindowStyle="None"
+        FontWeight="Light" FontFamily="helvetica">
+    <Grid>
+        <StackPanel VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="30" Margin="0,6,28,0">
+            <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
+                 x:Name="refreshBTN" Click="refreshBTN_Click">
+                <MaterialDesing:PackIcon Kind="Refresh" Height="25" Width="25"/>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Text="HOME" FontSize="40" HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" Margin="0,15,0,0"/>
+
+        <StackPanel Margin="0,100,0,0">
+
+            <StackPanel Margin="0,0,220,0">
+                <TextBlock Text="All albums: " FontSize="30" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="10,0,22,0" x:Name="albumsList">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="Width" Value="150"/>
+                            <Setter Property="FontSize" Value="25"/>
+                            <Setter Property="FontFamily" Value="helvetica"/>
+                            <Setter Property="FontWeight" Value="Light"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Margin="637,-136,25,0" Height="579">
+                <TextBlock Text="All users: " FontSize="30" HorizontalAlignment="Left"/>
+                <ListView Background="#FF2F7CC9" MinHeight="30"  x:Name="usersList">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="FontFamily" Value="helvetica"/>
+                            <Setter Property="FontWeight" Value="Light"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Margin="10,-432,242,0" Height="436">
+
+                <TextBlock Text="Last Photos:" FontSize="30" HorizontalAlignment="Left"/>
+
+                <!-- Upper StackPanel -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0" Name="photo1"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <ListView BorderThickness="0" Width="295" Height="195" x:Name="photo2"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+
+                <!-- Buttom StackPanel -->
+                <StackPanel Orientation="Horizontal">
+                    <ListView BorderThickness="0" Width="295" Height="195" Margin="0,0,10,0" x:Name="photo3"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <ListView BorderThickness="0" Width="295" Height="195" x:Name="photo4"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path}" Width="294" Height="194"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+                
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
