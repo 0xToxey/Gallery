@@ -19,7 +19,7 @@ Gallery project by Gabriel Bialyk
 ## Quick start
 
 - Open The releases tab and download the GalleryConsole.exe file - (Console app)
-- Open The releases tab and download the GalleryGui.exe & serverFolder (run server.exe) - (Gui app)
+- Open The releases tab and download the GallerySetup.exe & serverFolder (run server.exe) - (Gui app & server)
 
 ## Status
 
