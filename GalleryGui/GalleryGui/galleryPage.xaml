@@ -56,13 +56,13 @@
                     </StackPanel>
                 </Button>
 
-                <Button Style="{StaticResource MenuButton}" FontSize="20" Height="60" x:Name="gallerysbtn" Click="gallerysbtn_Click">
+                <Button Style="{StaticResource MenuButton}" FontSize="20" Height="60" x:Name="profileBTN" Click="profilebtn_Click">
                     <StackPanel Orientation="Horizontal" Background="Transparent" Width="210">
-                        <MaterialDesing:PackIcon Kind="PhotoAlbum" Height="24" Width="24"
+                        <MaterialDesing:PackIcon Kind="UserBox" Height="24" Width="24"
                                                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Text="GALLERYS" FontSize="20" Margin="10,0,0,0"/>
+                        <TextBlock Text="PROFILE" FontSize="20" Margin="10,0,0,0"/>
 
-                        <TextBlock Margin="75,0,0,0" Background="#FF2F7CC9" Width="10" x:Name="GalleyCurrect" Visibility="Hidden"/>
+                        <TextBlock Margin="91.5,0,0,0" Background="#FF2F7CC9" Width="10" x:Name="ProfileCurrect" Visibility="Hidden"/>
                     </StackPanel>
                 </Button>
 

@@ -52,29 +52,29 @@ namespace GalleryGui
             if (current == "HOME")
             {
                 SearchCurrect.Visibility = System.Windows.Visibility.Hidden;
-                GalleyCurrect.Visibility = System.Windows.Visibility.Hidden;
+                ProfileCurrect.Visibility = System.Windows.Visibility.Hidden;
                 HomeCurrect.Visibility = System.Windows.Visibility.Visible;
             }
 
             else if (current == "SEARCH")
             {
                 HomeCurrect.Visibility = System.Windows.Visibility.Hidden;
-                GalleyCurrect.Visibility = System.Windows.Visibility.Hidden;
+                ProfileCurrect.Visibility = System.Windows.Visibility.Hidden;
                 SearchCurrect.Visibility = System.Windows.Visibility.Visible;
             }
 
-            else if (current == "GALLERYS")
+            else if (current == "PROFILE")
             {
                 HomeCurrect.Visibility = System.Windows.Visibility.Hidden;
                 SearchCurrect.Visibility = System.Windows.Visibility.Hidden;
-                GalleyCurrect.Visibility = System.Windows.Visibility.Visible;
+                ProfileCurrect.Visibility = System.Windows.Visibility.Visible;
             }
 
             else if (current == "SETTINGS")
             {
                 HomeCurrect.Visibility = System.Windows.Visibility.Hidden;
                 SearchCurrect.Visibility = System.Windows.Visibility.Hidden;
-                GalleyCurrect.Visibility = System.Windows.Visibility.Hidden;
+                ProfileCurrect.Visibility = System.Windows.Visibility.Hidden;
             }
         }
         #endregion
@@ -98,9 +98,9 @@ namespace GalleryGui
 
         }
 
-        private void gallerysbtn_Click(object sender, RoutedEventArgs e)
+        private void profilebtn_Click(object sender, RoutedEventArgs e)
         {
-            updateCurrectMenu("GALLERYS");
+            updateCurrectMenu("PROFILE");
             pagesPlace.Children.Clear();
 
         }
