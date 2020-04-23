@@ -1,0 +1,68 @@
+﻿<Window x:Class="GalleryGui.SearchPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GalleryGui"
+        xmlns:MaterialDesing="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="SearchPage" Height="700" Width="860" WindowStyle="None"
+        FontWeight="Light" FontFamily="helvetica" 
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown">
+    <Grid>
+        <StackPanel VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="30" Margin="0,6,28,0">
+            <Button Style="{StaticResource SettingsButton}" Width="25" Height="25" Background="Transparent" BorderBrush="{x:Null}"
+                 x:Name="refreshBTN" Click="refreshBTN_Click">
+                <MaterialDesing:PackIcon Kind="Refresh" Height="25" Width="25"/>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Text="Search" FontSize="40" HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" Margin="0,15,0,0"/>
+
+        <StackPanel Margin="0,110,0,0">
+            <StackPanel Margin="0,0,220,0">
+                <TextBlock Text="My albums: " FontSize="30" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <ListBox Background="#FF2F7CC9" MinHeight="100" Margin="10,0,22,0" x:Name="albumsList">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="Width" Value="150"/>
+                            <Setter Property="FontSize" Value="25"/>
+                            <Setter Property="FontFamily" Value="helvetica"/>
+                            <Setter Property="FontWeight" Value="Light"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Margin="637,-136,10,0" Height="579">
+                <TextBlock Text="Statics: " FontSize="30" HorizontalAlignment="Left" Foreground="#FF2F7CC9"/>
+                <TextBlock Text="Albums amount: " FontSize="25" Margin="0,20,0,0" Name="AlbumAmount"/>
+                <TextBlock Text="Photos amount: " FontSize="25" Margin="0,20,0,0" Name="PhotosAmount"/>
+                <TextBlock Text="Tags amount: " FontSize="25" Margin="0,20,0,0" Name="TagAmount"/>
+            </StackPanel>
+
+            <StackPanel Margin="10,-450,242,0" Height="436">
+                <TextBlock Text="My Photos:" FontSize="30" HorizontalAlignment="Left"/>
+                <ListBox Height="399" Width="600" HorizontalAlignment="Left" VerticalAlignment="Top"
+                 Margin="0,0,0,0" x:Name="photosList" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Image Source="{Binding Path}" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>
