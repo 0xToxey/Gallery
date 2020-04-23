@@ -53,20 +53,19 @@
             <TextBlock Text="Photos amount: " FontSize="20" Margin="5,10,0,0" x:Name="PicAmount"/>
             <TextBlock Text="Tags Amount: " FontSize="20" Margin="5,10,0,0" x:Name="TagsAmount"/>
 
-            <StackPanel Margin="-30,30,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <StackPanel Visibility="Visible" x:Name="ChangeAlbum" Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Delete Album:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
-                        <Button x:Name="deleteBTN" Content="DELETE" FontSize="20" Width="100" Height="30"
-                            Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
-                            Margin="0,5,0,0" Click="deleteBTN_Click"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="15,0,0,0">
-                        <TextBlock Text="Add Picture:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
-                        <Button x:Name="addAlbumBTN" Content="ADD" FontSize="20" Width="100" Height="30"
+            <StackPanel Margin="-30,30,0,0" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible" x:Name="ChangeAlbum">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Delete Album:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
+                    <Button x:Name="deleteBTN" Content="DELETE" FontSize="20" Width="100" Height="30"
+                        Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
+                        Margin="0,5,0,0" Click="deleteBTN_Click"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical" Margin="15,0,0,0">
+                    <TextBlock Text="Add Picture:" Foreground="#FF2F7CC9" HorizontalAlignment="Center" FontSize="20" FontWeight="Light" FontFamily="helvetica"/>
+                    <Button x:Name="addPicBTN" Content="ADD" FontSize="20" Width="100" Height="30"
                                 Style="{StaticResource LogginButton}" HorizontalAlignment="Center"
-                                Margin="0,5,0,0" Click="addAlbumBTN_Click"/>
-                    </StackPanel>
+                                Margin="0,5,0,0" Click="addPicBTN_Click"/>
                 </StackPanel>
             </StackPanel>
 

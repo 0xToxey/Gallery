@@ -103,6 +103,11 @@ namespace GalleryGui
             updateCurrectMenu("PROFILE");
             pagesPlace.Children.Clear();
 
+            profilePage Child = new profilePage(this._userName, this._userId);
+            object content = Child.Content;
+            Child.Content = null;
+            Child.Close();
+            this.pagesPlace.Children.Add(content as UIElement);
         }
 
         private void settingsbtn_Click(object sender, RoutedEventArgs e)

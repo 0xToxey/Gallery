@@ -47,6 +47,16 @@
             
         </StackPanel>
 
+        <StackPanel x:Name="NewAlbum" Visibility="Hidden">
+            <TextBlock Foreground="#FF2F7CC9" Text="Enter New Album:" FontSize="30" Margin="0,50,0,0" HorizontalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center">
+                <TextBox FontFamily="Helvetiva" FontWeight="Light" Text="Album Name" FontSize="25"
+                         HorizontalAlignment="Center" Foreground="#494949" Background="Transparent" Width="240" Height="25"
+                         BorderBrush="Transparent" x:Name="AlbumName" GotFocus="AlbumName_GotFocus"/>
+            </StackPanel>
+        </StackPanel>
+        
         <StackPanel Orientation="Horizontal" Margin="0,0,0,15" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Button x:Name="acceptBTN" Style="{StaticResource LogginButton}" Width="100" Height="40"
                         Margin="65,0,52,0" Click="acceptBTN_Click">

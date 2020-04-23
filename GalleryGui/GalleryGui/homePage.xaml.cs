@@ -41,7 +41,6 @@ namespace GalleryGui
             _listViewArr[2] = photo3;
             _listViewArr[3] = photo4;
 
-
             RefreshLists();
         }
 

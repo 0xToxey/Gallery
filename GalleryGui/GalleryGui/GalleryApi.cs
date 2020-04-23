@@ -39,6 +39,8 @@ namespace GalleryGui
             // If the data is empty, username not exist.
             if (data == null)
                 return false;
+            if (data.Count == 0)
+                return false;
 
             return true;
         }
@@ -94,6 +96,34 @@ namespace GalleryGui
                 return true;
             return false;
         }
+        
+        /*
+         * The function update password
+         */
+        public void changePass(string userid, string password)
+        {
+            string urlCreate = this.url + "user/" + userid;
+            string data = "password=" + password;
+
+            string response;
+            try
+            {
+                response = patchRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while changing password");
+
+            else if (json.Count == 0)
+                throw new Exception("Error while changing password");
+        }
         #endregion
 
         #region Get things
@@ -124,34 +154,6 @@ namespace GalleryGui
 
             userId = data.First.SelectToken("ID").ToString();
             return userId;
-        }
-
-        /*
-         * The function update password
-         */
-        public void changePass(string userid, string password)
-        {
-            string urlCreate = this.url + "user/" + userid;
-            string data = "password=" + password;
-
-            string response;
-            try
-            {
-                response = patchRequest(urlCreate, data);
-            }
-            catch (Exception err)
-            {
-                throw err;
-            }
-
-            // Convert data to json.
-            JObject json = JObject.Parse(response);
-
-            if (json.ContainsKey("error"))
-                throw new Exception("Error while changing password");
-
-            else if (json.Count == 0)
-                throw new Exception("Error while changing password");
         }
 
         /*
@@ -460,10 +462,120 @@ namespace GalleryGui
             return false;
         }
 
+        /*
+         * The function check if the album name is taken
+         */
+        public bool CheckAlbumName(string albumName)
+        {
+            List<Album> albums = getAllAlbums();
+
+            foreach(Album album in albums)
+            {
+                if (album.name == albumName)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /*
+         * The function return all the picture of user
+         */
+        public List<Img> getAllPhotosOf(string userid)
+        {
+            List<Img> userPhotos = new List<Img>();
+            List<Album> userAlbums = getAllAlbumsOf(userid);
+
+            foreach(Album album in userAlbums)
+            {
+                List<Img> newImgs = getAlbumPhotos(album);
+                foreach (Img img in newImgs)
+                {
+                    userPhotos.Add(img);
+                }
+            }
+
+            return userPhotos;
+        }
+
+        /*
+         * The function return all the albums of user
+         */
+        public List<Album> getAllAlbumsOf(string userid)
+        {
+            List<Album> allAlbums = getAllAlbums();
+            List<Album> userAlbums = new List<Album>();
+
+            foreach(Album album in allAlbums)
+            {
+                if (album.ownerID.ToString() == userid)
+                {
+                    userAlbums.Add(album);
+                }
+            }
+
+            return userAlbums;
+        }
+
+        /*
+         * The function return the tags of user
+         */
+        public int getTagsCount(string userid)
+        {
+            int count = 0;
+
+            // Create the get request msg
+            string condition = url + "count(id) as count/Tags/WHERE user_id = " + userid;
+
+            // Get the response from the server.
+            string rsponse;
+            try
+            {
+                rsponse = getRequest(condition);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(rsponse);
+            JArray data = (JArray)json.SelectToken("data");
+
+            if (data != null)
+                count = int.Parse(data.First.SelectToken("count").ToString());
+
+            return count;
+        }
+
         #endregion
 
         #region Create things
-        
+        /*
+         * The function create new album
+         */
+        public void createAlbum(Album newAlbum)
+        {
+            string urlCreate = this.url + "album/";
+            string data = "name=" + newAlbum.name + "&creation_date=" + newAlbum.date + "&user_id=" + newAlbum.ownerID;
+
+            string response;
+            try
+            {
+                response = postRequest(urlCreate, data);
+            }
+            catch (Exception err)
+            {
+                throw err;
+            }
+
+            // Convert data to json.
+            JObject json = JObject.Parse(response);
+
+            if (json.ContainsKey("error"))
+                throw new Exception("Error while creating the album.");
+        }
+
         /*
          * The function create new photo
          */
@@ -513,7 +625,6 @@ namespace GalleryGui
             if (json.ContainsKey("error"))
                 throw new Exception("Error while creating tag.");
         }
-
         #endregion
 
         #region delete things.
@@ -522,6 +633,13 @@ namespace GalleryGui
          */
         public void deleteUser(string userId)
         {
+            // Delete all users albums
+            List<Album> userAlbums = getAllAlbumsOf(userId);
+            foreach(Album album in userAlbums)
+            {
+                deleteAlbum(album);
+            }
+
             string deleteURL = url + "user/" + userId;
 
             string response;

@@ -20,13 +20,18 @@ namespace GalleryGui
     /// </summary>
     public partial class GetUserNamePopup : Window
     {
-        private bool _NewPic;
         private GalleryApi api;
+
+        private bool _NewPic;
         private Album _album;
+
         private Img _photo;
         private bool _tag;
 
-        public GetUserNamePopup(bool NewPic, Album album, Img photo, bool tag)
+        private bool _newAlbum;
+        private int _ownerID;
+
+        public GetUserNamePopup(bool NewPic, Album album, Img photo, bool tag, bool newAlbum, int ownerID)
         {
             InitializeComponent();
 
@@ -35,15 +40,22 @@ namespace GalleryGui
             this._album = album;
             this._photo = photo;
             this._tag = tag;
+            this._newAlbum = newAlbum;
+            this._ownerID = ownerID;
 
             // Id its Un/Tag user
-            if (!this._NewPic)
+            if (!newAlbum)
+                if (!this._NewPic)
+                {
+                    Un_Tag_User.Visibility = System.Windows.Visibility.Visible;
+                }
+                else // If its new picture.
+                {
+                    AddPhoto.Visibility = System.Windows.Visibility.Visible;
+                }
+            else
             {
-                Un_Tag_User.Visibility = System.Windows.Visibility.Visible;
-            }
-            else // If its new picture.
-            {
-                AddPhoto.Visibility = System.Windows.Visibility.Visible;
+                NewAlbum.Visibility = System.Windows.Visibility.Visible;
             }
         }
 
@@ -75,10 +87,49 @@ namespace GalleryGui
             Username.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
 
+        private void AlbumName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            AlbumName.BorderBrush = System.Windows.Media.Brushes.Transparent;
+        }
+
         private void acceptBTN_Click(object sender, RoutedEventArgs e)
         {
-            // Id its Un/Tag user
-            if (!this._NewPic)
+            if (this._newAlbum)// If its new albums option.
+            {
+                if (AlbumName.Text.Length == 0)
+                {
+                    AlbumName.BorderBrush = System.Windows.Media.Brushes.Red;
+                    MessageBox.Show("Album Name Empty");
+                    return;
+                }
+                else if (api.CheckAlbumName(AlbumName.Text))
+                {
+                    AlbumName.BorderBrush = System.Windows.Media.Brushes.Red;
+                    MessageBox.Show("Album Name Taken");
+                    return;
+                }
+                else
+                {
+                    Album newAlbum = new Album();
+                    newAlbum.name = AlbumName.Text;
+                    newAlbum.ownerID = this._ownerID;
+
+                    var dataTime = new CultureInfo("en-GB");
+                    DateTime localDate = DateTime.Now;
+                    newAlbum.date = localDate.ToString(dataTime);
+                    try
+                    {
+                        api.createAlbum(newAlbum);
+                        MessageBox.Show("New Album was added.");
+                        this.Close();
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show(err.Message);
+                    }
+                }
+            }
+            else if (!this._NewPic) // If its Un/Tag user
             {
                 if (Username.Text.Length == 0)
                 {
@@ -99,6 +150,16 @@ namespace GalleryGui
                         {
                             Username.BorderBrush = System.Windows.Media.Brushes.Red;
                             MessageBox.Show("UserName isnt tagged.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        List<string> users = api.getTaggedUsers(this._photo);
+                        if (users.IndexOf(Username.Text) != -1)
+                        {
+                            Username.BorderBrush = System.Windows.Media.Brushes.Red;
+                            MessageBox.Show("UserName is tagged.");
                             return;
                         }
                     }

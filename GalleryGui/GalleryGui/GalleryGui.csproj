@@ -142,6 +142,9 @@
     <Compile Include="homePage.xaml.cs">
       <DependentUpon>homePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="profilePage.xaml.cs">
+      <DependentUpon>profilePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="registerPage.xaml.cs">
       <DependentUpon>registerPage.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="profilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="registerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

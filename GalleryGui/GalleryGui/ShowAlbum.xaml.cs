@@ -112,9 +112,9 @@ namespace GalleryGui
             loadAlbumDetails();
         }
 
-        private void addAlbumBTN_Click(object sender, RoutedEventArgs e)
+        private void addPicBTN_Click(object sender, RoutedEventArgs e)
         {
-            GetUserNamePopup addAlbum = new GetUserNamePopup(true, this.opendAlbum, null, false);
+            GetUserNamePopup addAlbum = new GetUserNamePopup(true, this.opendAlbum, null, false, false, 0);
             addAlbum.Show();
         }
     }

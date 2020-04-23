@@ -52,7 +52,7 @@ namespace GalleryGui
 
                 IdText.Text = "Id: " + photo.ID;
                 CreationDate.Text = "Date: " + photo.date;
-                AlbumID.Text = "Album Id:" + photo.albumID.ToString();
+                AlbumID.Text = "Album Id: " + photo.albumID.ToString();
                 photoName.Text = "Name: " + photo.name;
                 
                 List<string> usersList = api.getTaggedUsers(photo);
@@ -102,13 +102,13 @@ namespace GalleryGui
 
         private void tagBTN_Click(object sender, RoutedEventArgs e)
         {
-            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, true);
+            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, true, false, 0);
             addAlbum.Show();
         }
 
         private void untagBTN_Click(object sender, RoutedEventArgs e)
         {
-            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, false);
+            GetUserNamePopup addAlbum = new GetUserNamePopup(false, null, _img, false, false, 0);
             addAlbum.Show();
         }
 
