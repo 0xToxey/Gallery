@@ -36,4 +36,5 @@ Gallery project by Gabriel Bialyk
 
 **G.B**
 
+- <https://github.com/ToxEy69>
 - <https://gitlab.com/Toxey>
